@@ -15,7 +15,7 @@ jobs:
     permissions: read-all
     env:
       ACTIONS_STEP_DEBUG: true
-      PROJECT_FILE_PATH: "AssesmentSystem/Assess.csproj"
+      # PROJECT_FILE_PATH: "AssesmentSystem/Assess.csproj"
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -30,14 +30,26 @@ jobs:
       # - name: Change directory to AssesmentSystem
       #   run: cd AssesmentSystem
 
-      # Dotnet build (build the specific project file)
-      - name: Dotnet build $PROJECT_FILE_PATH
-        run: dotnet build $PROJECT_FILE_PATH
+      - name: Debug Root Directory
+        run: ls -la
 
-      - name: Dotnet Restore
-        run: dotnet restore ${{ vars.SOLUTION_PATH }}
-      - name: Dotnet Build
-        run: dotnet build ${{ vars.SOLUTION_PATH }}
+        # Dotnet restore (restore dependencies for all projects within the solution)
+      - name: Dotnet restore solution
+        run: dotnet restore AssessGrader.sln
+
+      # Dotnet build (build the entire solution)
+      - name: Dotnet build solution
+        run: dotnet build AssessGrader.sln
+
+
+      # # Dotnet build (build the specific project file)
+      # - name: Dotnet build $PROJECT_FILE_PATH
+      #   run: dotnet build $PROJECT_FILE_PATH
+
+      # - name: Dotnet Restore
+      #   run: dotnet restore ${{ vars.SOLUTION_PATH }}
+      # - name: Dotnet Build
+      #   run: dotnet build ${{ vars.SOLUTION_PATH }}
     
   test:
     needs: build
