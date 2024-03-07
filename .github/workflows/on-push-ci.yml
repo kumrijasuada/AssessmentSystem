@@ -26,10 +26,6 @@ jobs:
           dotnet-version: ${{ vars.DOTNET_VERSION }}
           source-url: ${{ vars.NUGET_SOURCE_URL }}
 
-      # # Change current directory to AssesmentSystem
-      # - name: Change directory to AssesmentSystem
-      #   run: cd AssesmentSystem
-
       - name: Debug Root Directory
         run: ls -la
 
@@ -41,16 +37,6 @@ jobs:
       - name: Dotnet build solution
         run: dotnet build AssessGrader.sln
 
-
-      # # Dotnet build (build the specific project file)
-      # - name: Dotnet build $PROJECT_FILE_PATH
-      #   run: dotnet build $PROJECT_FILE_PATH
-
-      # - name: Dotnet Restore
-      #   run: dotnet restore ${{ vars.SOLUTION_PATH }}
-      # - name: Dotnet Build
-      #   run: dotnet build ${{ vars.SOLUTION_PATH }}
-    
   test:
     needs: build
     runs-on: ubuntu-latest
