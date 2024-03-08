@@ -26,9 +26,6 @@ jobs:
               repo: context.repo.repo,
               run_id: ${{ github.event.workflow_run.id }}
             });
-      - name: Create annotation for build error
-        run: echo "Test"
-
             const tests = runs.jobs.flatMap(job => job.steps.filter(step => step.name === 'Run unit tests'));
 
             const testResults = tests.map(test => test.conclusion).join(", ");
