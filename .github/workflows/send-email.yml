@@ -31,17 +31,18 @@ jobs:
             console.log(testResults);
 
             return testResults;
-      - name: Send Github notification
-        uses: actions/github-script@v5
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const body = `
-              All unit tests have passed successfully.
-              `;
-             await github.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: ${{ github.event.workflow_run.run_number }},
-              body: body
-             });
+      # - name: Send Github notification
+      #   uses: actions/github-script@v5
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     script: |
+      #       const body = `
+      #         All unit tests have passed successfully.
+      #         Test Results: ${{ steps.get-results.outputs.result }}
+      #         `;
+      #        await github.issues.createComment({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         issue_number: ${{ github.event.workflow_run.run_number }},
+      #         body: body
+      #        });
