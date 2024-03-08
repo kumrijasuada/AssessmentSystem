@@ -45,6 +45,6 @@ jobs:
              await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: ${{ github.rest.event.workflow_run.run_number }}
-              # body: body
+              issue_number: ${{ github.rest.event.workflow_run.run_number }},
+              body: body
              });
