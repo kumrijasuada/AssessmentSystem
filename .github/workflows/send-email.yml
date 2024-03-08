@@ -28,28 +28,22 @@ jobs:
             const tests = runs.jobs.flatMap(job => job.steps.filter(step => step.name === 'Run unit tests'));
             return tests.map(test => test.conclusion).join(", ");
 
-      - name: Send Github notification
-        uses: actions/github-script@v5
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const body = `
-              All unit tests have passed successfully.
-              Test Results: ${{ steps.get-results.outputs.result }}
-              `;
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: parseInt('${{ github.run_number }}'),
-              body: body
-            });
+      # - name: Send Github notification
+      #   uses: actions/github-script@v5
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     script: |
+      #       const body = `
+      #         All unit tests have passed successfully.
+      #         Test Results: ${{ steps.get-results.outputs.result }}
+      #         `;
+      #       await github.rest.issues.createComment({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         issue_number: parseInt('${{ github.run_number }}'),
+      #         body: body
+      #       });
 
-  comment-on-issue:
-    name: Some workflow
-    runs-on: ubuntu-latest
-    if: github.event_name == 'issue_comment' && contains(github.event.comment.body, 'special string')
-    
-    steps:
       - name: Add comment to PR
         env:
           URL: ${{ github.event.issue.comments_url }}
