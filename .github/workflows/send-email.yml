@@ -28,20 +28,21 @@ jobs:
             const tests = runs.jobs.flatMap(job => job.steps.filter(step => step.name === 'Run unit tests'));
             return tests.map(test => test.conclusion).join(", ");
 
-      - name: Comment on pr
-        uses: actions/github-script@v6
-        env:
-          KEPLOY_REPORT: steps.keploytestreport.outputs.KEPLOY_REPORT
+      - name: Send Github notification
+        uses: actions/github-script@v5
         with:
-         github-token: ${{ github.token }}
-         script: |
-           github.rest.issues.createComment({
-             issue_number: context.issue.number,
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const body = `
+              All unit tests have passed successfully.
+              Test Results: ${{ steps.get-results.outputs.result }}
+              `;
+            await github.rest.issues.createComment({
              owner: context.repo.owner,
              repo: context.repo.repo,
-             body: process.env.KEPLOY_REPORT
-            })
-
+             issue_number: parseInt('${{ github.event.workflow_run.workflow_job.name.split("#")[1] }}'),
+             body: body
+             });
       # - name: Send Github notification
       #   uses: actions/github-script@v5
       #   with:
