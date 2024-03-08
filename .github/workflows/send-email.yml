@@ -1,36 +1,36 @@
+---
 name: CI/CD Send GitHub Notification
-
 on:
   workflow_run:
-    workflows: ["CI/CD On Push Workflow"]
+    workflows:
+      - CI/CD On Push Workflow
     types:
       - completed
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
+  workflow_dispatch: null
 jobs:
   send-notification:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-
     steps:
       - name: Get test results
         id: get-results
         uses: actions/github-script@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
+          script: >
             const { data: runs } = await github.actions.listJobsForWorkflowRun({
               owner: context.repo.owner,
               repo: context.repo.repo,
               run_id: ${{ github.event.workflow_run.id }}
             });
-            const tests = runs.jobs.flatMap(job => job.steps.filter(step => step.name === 'Run unit tests'));
-            const testResults = tests.map(test => test.conclusion).join(", ");
-            console.log(testResults);
-            return testResults;
 
+            const tests = runs.jobs.flatMap(job => job.steps.filter(step => step.name === 'Run unit tests'));
+
+            const testResults = tests.map(test => test.conclusion).join(", ");
+
+            console.log(testResults);
+
+            return testResults;
       - name: Send Github notification
         uses: actions/github-script@v5
         with:
