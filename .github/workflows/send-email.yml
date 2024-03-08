@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Get test results
         id: get-results
-        uses: actions/github-scrip@v5
+        uses: actions/github-script@v5
         with:
           github-token: ${{ secrets.GITHUB.TOKEN }}
           script: |
