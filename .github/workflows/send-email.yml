@@ -2,12 +2,12 @@ name: CI/CD Send GitHub Notification
 
 on:
   workflow_run:
-    workflows: ["CI/CD On Push Workflow"]
+    workflows:
+      - CI/CD On Push Workflow
     types:
-     - completed
+      - completed
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  workflow_dispatch: 
 
 jobs:
   send-notification:
@@ -19,28 +19,35 @@ jobs:
         id: get-results
         uses: actions/github-script@v5
         with:
-          github-token: ${{ secrets.GITHUB.TOKEN }}
-          script: |
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: >
             const { data: runs } = await github.actions.listJobsForWorkflowRun({
               owner: context.repo.owner,
               repo: context.repo.repo,
               run_id: ${{ github.event.workflow_run.id }}
             });
-            const tests = runs.jobs.flatMap(job => job.steps.filter(step => step.name === 'Run unit tests'));
-            return tests.map(test => test.conclusion).join(", ");
+      - name: Create annotation for build error
+        run: echo "Test"
 
+            const tests = runs.jobs.flatMap(job => job.steps.filter(step => step.name === 'Run unit tests'));
+
+            const testResults = tests.map(test => test.conclusion).join(", ");
+
+            console.log(testResults);
+
+            return testResults;
       - name: Send Github notification
         uses: actions/github-script@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          scripts: |
-            const body = '
+          script: |
+            const body = `
               All unit tests have passed successfully.
-              Test Results: ${{ steps.get-results.outputs.reuslt }}
-              ';
+              Test Results: ${{ steps.get-results.outputs.result }}
+              `;
              await github.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: ${{ github.event.workflow_run.workflow_job.name.split('#')[1] }},
+              issue_number: ${{ github.event.workflow_run.run_number }},
               body: body
              });
