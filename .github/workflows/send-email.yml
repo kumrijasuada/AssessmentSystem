@@ -41,6 +41,7 @@ jobs:
              await github.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: parseInt(${{ github.event.workflow_job.name.split("#")[1] }}),
+              # issue_number: parseInt(${{ github.event.workflow_job.name.split("#")[1] }}),
+              issue_number: ${{ github.event.workflow_run.run_number }},
               body: body
              });
