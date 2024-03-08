@@ -1,12 +1,14 @@
----
 name: CI/CD Send GitHub Notification
+
 on:
   workflow_run:
     workflows:
       - CI/CD On Push Workflow
     types:
       - completed
-  workflow_dispatch: null
+
+  workflow_dispatch: 
+
 jobs:
   send-notification:
     runs-on: ubuntu-latest
@@ -23,14 +25,16 @@ jobs:
               repo: context.repo.repo,
               run_id: ${{ github.event.workflow_run.id }}
             });
+      - name: Create annotation for build error
+        run: echo "Test"
 
-            const tests = runs.jobs.flatMap(job => job.steps.filter(step => step.name === 'Run unit tests'));
+            # const tests = runs.jobs.flatMap(job => job.steps.filter(step => step.name === 'Run unit tests'));
 
-            const testResults = tests.map(test => test.conclusion).join(", ");
+            # const testResults = tests.map(test => test.conclusion).join(", ");
 
-            console.log(testResults);
+            # console.log(testResults);
 
-            return testResults;
+            # return testResults;
       # - name: Send Github notification
       #   uses: actions/github-script@v5
       #   with:
