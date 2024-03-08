@@ -45,5 +45,5 @@ jobs:
               repo: context.repo.repo,
               issue_number: parseInt('${{ github.run_number }}'),
               # body: body
-              body: `${{env.SCRIPT_OUTPUT}}`
+              body: '${{env.SCRIPT_OUTPUT}}'
              });
