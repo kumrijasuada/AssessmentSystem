@@ -33,17 +33,8 @@ jobs:
             console.log(testResults);
 
             return testResults;
-
-      - uses: actions/checkout@v4
-      - uses: jwalton/gh-find-current-pr@master
-        id: findPr
-        with:
-         state: open
-      - run: echo "Your PR is ${PR}"
-        if: success() && steps.findPr.outputs.number
         env:
-         PR: ${{ steps.findPr.outputs.pr }}
-
+          NUMBER: ${{ github.event.issue.number }}
 
       - name: Send Github notification
         uses: actions/github-script@v5
@@ -58,6 +49,6 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               # issue_number: ${{ github.rest.event.workflow_run.run_number }},
-              issue_number: ${{ steps.findPr.outputs.pr }},
+              issue_number: $NUMBER,
               body: body
              });
