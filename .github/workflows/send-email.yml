@@ -36,10 +36,10 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const body = `
+            const body = ''
               All unit tests have passed successfully.
               Test Results: ${{ steps.get-results.outputs.result }}
-              `;
+              '';
              await github.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
