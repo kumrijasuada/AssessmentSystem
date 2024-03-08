@@ -14,7 +14,26 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
-    
     steps:
+      - name: Get job number
+        id: get-job-number
+        run: echo "::set-output name=job_number::$(echo $GITHUB_WORKFLOW | cut -d '#' -f2)"
+
       - name: Debug Root Directory
         run: ls -la
+
+      - name: Send Github notification
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          scripts: |
+            const body = '
+              All unit tests have passed successfully.
+              Job Number: ${{ steps.get-job-number.outputs.job_number }}
+              ';
+            await github.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ github.event.workflow_run.workflow_job.id }},
+              body: body
+            });
