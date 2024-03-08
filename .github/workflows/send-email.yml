@@ -33,7 +33,7 @@ jobs:
         uses: actions/github-script@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          scripts: |
+          script: |
             const body = '
               All unit tests have passed successfully.
               Test Results: ${{ steps.get-results.outputs.reuslt }}
@@ -41,6 +41,6 @@ jobs:
              await github.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: ${{ github.event.workflow_run.workflow_job.name.split('#')[1] }},
+              issue_number: ${{ github.event.workflow_run.id }},
               body: body
              });
