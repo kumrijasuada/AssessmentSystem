@@ -2,8 +2,7 @@ name: CI/CD Send GitHub Notification
 
 on:
   workflow_run:
-    workflows:
-      - CI/CD On Push Workflow
+    workflows: ["CI/CD On Push Workflow"]
     types:
       - completed
 
@@ -44,6 +43,6 @@ jobs:
              await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: ${{ github.run_number }}
+              issue_number: parseInt(' ${{ github.run_number }}'),
               body: body
              });
