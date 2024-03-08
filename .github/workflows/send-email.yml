@@ -20,21 +20,17 @@ jobs:
         uses: actions/github-script@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: >
-            const { data: runs } = await github.rest.actions.listJobsForWorkflowRun({
+          script: |
+            const { data: runs } = await github.actions.listJobsForWorkflowRun({
               owner: context.repo.owner,
               repo: context.repo.repo,
               run_id: ${{ github.event.workflow_run.id }}
             });
             const tests = runs.jobs.flatMap(job => job.steps.filter(step => step.name === 'Run unit tests'));
+            return tests.map(test => test.conclusion).join(", ");
 
-            const testResults = tests.map(test => test.conclusion).join(", ");
-
-            console.log(testResults);
-
-            return testResults;
-        env:
-          NUMBER: ${{ github.event.issue.number }}
+        # env:
+        #   NUMBER: ${{ github.event.issue.number }}
 
       - name: Send Github notification
         uses: actions/github-script@v5
@@ -48,7 +44,7 @@ jobs:
              await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              # issue_number: ${{ github.rest.event.workflow_run.run_number }},
-              issue_number: $NUMBER,
+              issue_number: ${{ github.rest.event.workflow_run.run_number }},
+              # issue_number: $NUMBER,
               body: body
              });
