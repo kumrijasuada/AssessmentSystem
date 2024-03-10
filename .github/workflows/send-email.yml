@@ -13,11 +13,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v5
+      - uses: kumrijasuada/gh-find-current-pr@main
+        id: findPr
         with:
+          state: closed
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             github.rest.issues.createComment({
-              issue_number: parseInt('${{ github.event.pull_request.number }}'),
+              issue_number: parseInt('${{ steps.findPr.outputs.pr }}'),
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: 'Please change PR Title!!'
