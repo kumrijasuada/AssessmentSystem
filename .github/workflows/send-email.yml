@@ -9,54 +9,50 @@ on:
   workflow_dispatch: 
 
 jobs:
-  send-notification:
+   comment:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-
     steps:
-      - name: Get test results
-        id: get-results
-        uses: actions/github-script@v5
+      - uses: actions/github-script@v5
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const { data: runs } = await github.rest.actions.listJobsForWorkflowRun({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              run_id: ${{ github.event.workflow_run.id }}
-            });
-            const tests = runs.jobs.flatMap(job => job.steps.filter(step => step.name === 'Run unit tests'));
-            return tests.map(test => test.conclusion).join(", ");
-
-      - name: Send Github notification
-        uses: actions/github-script@v7
-        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '👋 Thanks for reporting!'
+              body: 'Please change PR Title!!'
             })
+# jobs:
+#   send-notification:
+#     runs-on: ubuntu-latest
+#     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
+#     steps:
+#       - name: Get test results
+#         id: get-results
+#         uses: actions/github-script@v5
+#         with:
+#           github-token: ${{ secrets.GITHUB_TOKEN }}
+#           script: |
+#             const { data: runs } = await github.rest.actions.listJobsForWorkflowRun({
+#               owner: context.repo.owner,
+#               repo: context.repo.repo,
+#               run_id: ${{ github.event.workflow_run.id }}
+#             });
+#             const tests = runs.jobs.flatMap(job => job.steps.filter(step => step.name === 'Run unit tests'));
+#             return tests.map(test => test.conclusion).join(", ");
 
-
-
-
-        # uses: actions/github-script@v5
-        # with:
-        #   github-token: ${{ secrets.GITHUB_TOKEN }}
-        #   script: |
-        #     const body = `
-        #       All unit tests have passed successfully.
-        #       Test Results: ${{ steps.get-results.outputs.result }}
-        #       `;
-        #     await github.rest.issues.createComment({
-        #      owner: context.repo.owner,
-        #      repo: context.repo.repo,
-        #      issue_number: parseInt('${{ github.run_number }}'),
-        #      body: body
-        #      });
+#       - name: Send Github notification
+#         uses: actions/github-script@v5
+#         with:
+#           github-token: ${{secrets.GITHUB_TOKEN}}
+#           script: |
+#             github.rest.issues.createComment({
+#               issue_number: context.issue.number,
+#               owner: context.repo.owner,
+#               repo: context.repo.repo,
+#               body: 'Please change PR Title!!'
+#             })
 
 
 
