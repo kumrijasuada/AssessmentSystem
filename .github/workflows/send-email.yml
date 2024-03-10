@@ -21,22 +21,18 @@ jobs:
       
       - name: Print pull request number
         run: echo "Last pull request number is ${{ steps.get-pr-number.outputs.pr_number }}"
-   # comment:
-   #  runs-on: ubuntu-latest
-   #  steps:
-   #    # - uses: actions/github-script@v5
-   #    - uses: 8BitJonny/gh-get-current-pr@3.0.0
-   #      id: PR
-   #      with:
-   #        # state: closed
-   #        github-token: ${{secrets.GITHUB_TOKEN}}
-   #        script: |
-   #          github.rest.issues.createComment({
-   #            issue_number: ${{ steps.PR.outputs.number }},
-   #            owner: context.repo.owner,
-   #            repo: context.repo.repo,
-   #            body: 'Please change PR Title!!'
-   #          })
+
+      - name: Add Comment
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: ${{ steps.get-pr-number.outputs.pr_number }},
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Please change PR Title!!'
+            })
 
    #    - name: list all closed pull requests in last 24 hours
    #      id: list
