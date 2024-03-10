@@ -9,32 +9,48 @@ on:
   workflow_dispatch: 
 
 jobs:
-   comment:
+  read-pull-request:
     runs-on: ubuntu-latest
     steps:
-      # - uses: actions/github-script@v5
-      - uses: 8BitJonny/gh-get-current-pr@3.0.0
-        id: PR
-        with:
-          # state: closed
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            github.rest.issues.createComment({
-              issue_number: ${{ steps.PR.outputs.number }},
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'Please change PR Title!!'
-            })
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Get last pull request number
+        id: get-pr-number
+        run: echo "::set-output name=pr_number::$(git log -1 --pretty=format:%s | grep -oP '#\d+')"
+      
+      - name: Print pull request number
+        run: echo "Last pull request number is ${{ steps.get-pr-number.outputs.pr_number }}"
+   # comment:
+   #  runs-on: ubuntu-latest
+   #  steps:
+   #    # - uses: actions/github-script@v5
+   #    - uses: 8BitJonny/gh-get-current-pr@3.0.0
+   #      id: PR
+   #      with:
+   #        # state: closed
+   #        github-token: ${{secrets.GITHUB_TOKEN}}
+   #        script: |
+   #          github.rest.issues.createComment({
+   #            issue_number: ${{ steps.PR.outputs.number }},
+   #            owner: context.repo.owner,
+   #            repo: context.repo.repo,
+   #            body: 'Please change PR Title!!'
+   #          })
 
-      - name: list all closed pull requests in last 24 hours
-        id: list
-        uses: buildsville/list-pull-requests@v1
-        with:
-            token: ${{secrets.GITHUB_TOKEN}}
-            state: 'closed'
-            window: '24'
-      - name: output
-        run: echo '${{ steps.list.outputs.pulls }}'
+   #    - name: list all closed pull requests in last 24 hours
+   #      id: list
+   #      uses: buildsville/list-pull-requests@v1
+   #      with:
+   #          token: ${{secrets.GITHUB_TOKEN}}
+   #          state: 'closed'
+   #          window: '24'
+   #    - name: output
+   #      run: echo '${{ steps.list.outputs.pulls }}'
+
+
+
+
 # jobs:
 #   send-notification:
 #     runs-on: ubuntu-latest
