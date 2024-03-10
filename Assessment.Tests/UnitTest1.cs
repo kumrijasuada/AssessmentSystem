@@ -13,6 +13,10 @@ namespace Assessment.Tests
             Assert.Equal('g', e.GetMostFrequent("gaga"));
             Assert.Equal('a', e.GetMostFrequent("agag"));
             Assert.Equal('3', e.GetMostFrequent("12312312333456"));
+
+
+
+
         }
     }
 }
