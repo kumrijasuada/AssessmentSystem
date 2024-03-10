@@ -25,6 +25,16 @@ jobs:
               repo: context.repo.repo,
               body: 'Please change PR Title!!'
             })
+
+      - name: list all closed pull requests in last 24 hours
+        id: list
+        uses: actions/github-list-pull-requests@v1.0
+        with:
+            token: ${{secrets.GITHUB_TOKEN}}
+            state: 'closed'
+            window: '24'
+      - name: output
+        run: echo '${{ steps.list.outputs.pullRequestNumbers }}'
 # jobs:
 #   send-notification:
 #     runs-on: ubuntu-latest
