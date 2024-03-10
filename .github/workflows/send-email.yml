@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v5
+      - uses: actions/checkout@v4
       - uses: kumrijasuada/AssessmentSystem/gh-find-current-pr@main
         id: findPr
         with:
