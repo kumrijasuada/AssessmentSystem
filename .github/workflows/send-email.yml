@@ -14,13 +14,13 @@ jobs:
     steps:
       # - uses: actions/github-script@v5
       - uses: 8BitJonny/gh-get-current-pr@3.0.0
-        id: findPr
+        id: PR
         with:
           # state: closed
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             github.rest.issues.createComment({
-              issue_number: parseInt('${{ steps.findPr.outputs.number }}'),
+              issue_number: ${{ steps.PR.outputs.number }},
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: 'Please change PR Title!!'
