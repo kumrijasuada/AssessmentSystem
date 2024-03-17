@@ -50,21 +50,35 @@ jobs:
           NUGET_AUTH_TOKEN: ${{ secrets.NUGET_TOKEN }}
           GITHUB_TOKEN: ${{ github.token }}
 
+        # Replace this whichever way you build your code
+      - name: Build & Test dotnet code
+        run: |
+          dotnet restore
+          dotnet build -c Release no-restore
+          dotnet test -c Release --no-restore --no-build --logger trx --results-directory ./TestResults || true
+      # Using the trx-parser action
+      - name: Parse Trx files
+        uses: NasAmin/trx-parser@v0.1
+        id: trx-parser
+        with:
+          TRX_PATH: ${{ github.workspace }}/TestResults #This should be the path to your TRX files
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}       
+
       # - name: Test
       #   run: dotnet test ${{ vars.SOLUTION_PATH }} #--logger "trx;LogFileName=test-results.trx" || true  *With this CI continue to run whether tests fail or not
         # run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx"
 
-      - uses: actions/checkout@v4
+      # - uses: actions/checkout@v4
 
-      - name: dotnet test with coverage
-        run: dotnet test ${{ vars.SOLUTION_PATH }} --logger trx --configuration Release || true
+      # - name: dotnet test with coverage
+      #   run: dotnet test ${{ vars.SOLUTION_PATH }} --logger trx --configuration Release || true
 
-      - name: Process trx reports with default
-        if: always()
-        # You may also reference just the major or major.minor version
-        uses: im-open/process-dotnet-test-results@v2.4.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Process trx reports with default
+      #   if: always()
+      #   # You may also reference just the major or major.minor version
+      #   uses: im-open/process-dotnet-test-results@v2.4.0
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
       # - name: Debug Test Results Directory
       #   run: ls -la /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults
 
