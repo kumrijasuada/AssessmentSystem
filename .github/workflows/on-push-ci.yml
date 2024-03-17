@@ -58,19 +58,17 @@ jobs:
         id: check_results
         run: |
           if [ -f TestResults/test-results.trx ]; then
-            echo "::set-output name=test-results-exist::true"
+            echo "test-results-exist=true" >> $GITHUB_ENV
           else
-            echo "::set-output name=test-results-exist::false"
+            echo "test-results-exist=false" >> $GITHUB_ENV
           fi
 
       - name: Get Test Results
         id: get_results
-        if: steps.check_results.outputs.test-results-exist == 'true'
+        if: env.TEST_RESULTS_EXIST == 'true'
         run: |
           test_results=$(grep -oP 'Total Points: \d+\nPassed : \d+\nFail :  \d+' TestResults/test-results.trx)
-          echo "::set-output name=test-results::$test_results"
-          echo "::set-output name=test-results::$test_results"
-
+          echo "test-results=$test_results" >> $GITHUB_ENV
 
       # - name: Test Report
       #   uses: dorny/test-reporter@v1
