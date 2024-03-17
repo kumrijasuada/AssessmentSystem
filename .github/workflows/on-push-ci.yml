@@ -62,4 +62,8 @@ jobs:
           path: "**/test-results.trx"
           reporter: dotnet-trx
           fail-on-error: true
+      - name: Build and Test
+        run: |
+          dotnet build
+          dotnet test --logger "console;verbosity=detailed" # Capture detailed test output
 
