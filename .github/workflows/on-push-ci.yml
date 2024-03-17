@@ -52,21 +52,20 @@ jobs:
           NUGET_AUTH_TOKEN: ${{ secrets.NUGET_TOKEN }}
           GITHUB_TOKEN: ${{ github.token }}
 
-      - name: Run tests
-        run: |
-          # Run your tests here and generate test result files
-          dotnet test --logger "trx;LogFileName=test-results.xml" || true
+      - name: Run NUnit tests
+        run: dotnet test --logger "trx;LogFileName=test-results.xml" || true
 
-      - name: Parse test results
-        run: |
-          # Example: Parse NUnit XML test result files
-          dotnet tool install --global dotnet-reportgenerator-globaltool
-          dotnet reportgenerator -reports:"**/test-results.xml" -reporttypes:Html -targetdir:coverage
+      - name: Install dotnet-reportgenerator tool
+        run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
-      - name: Display test results
-        run: |
-          # Example: Output formatted test results to GitHub Actions log
-          cat coverage/index.html
+      - name: Generate HTML test report
+        run: dotnet reportgenerator -reports:"**/test-results.xml" -reporttypes:Html -targetdir:coverage
+
+      - name: Upload test result files
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: coverage
 
 
 
