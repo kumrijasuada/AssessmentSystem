@@ -54,11 +54,21 @@ jobs:
         run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx" || true  *With this CI continue to run whether tests fail or not
         # run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx"
 
-      - name: Run Tests and Get Results
-        id: test
+      - name: Check Test Results File
+        id: check_results
         run: |
-          dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx" || true
-          test_results=$(grep -oP 'Total Points: \d+\nPassed : \d+\nFail :  \d+' test-results.trx)
+          if [ -f TestResults/test-results.trx ]; then
+            echo "::set-output name=test-results-exist::true"
+          else
+            echo "::set-output name=test-results-exist::false"
+          fi
+
+      - name: Get Test Results
+        id: get_results
+        if: steps.check_results.outputs.test-results-exist == 'true'
+        run: |
+          test_results=$(grep -oP 'Total Points: \d+\nPassed : \d+\nFail :  \d+' TestResults/test-results.trx)
+          echo "::set-output name=test-results::$test_results"
           echo "::set-output name=test-results::$test_results"
 
 
