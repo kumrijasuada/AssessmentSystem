@@ -80,9 +80,10 @@ jobs:
         run: cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
 
       - name: Get Test Results
-        run: echo "$last_stdout"
-        env:
-         last_stdout: "$(xmlstarlet sel -t -v '//UnitTestResult[last()]/Output/StdOut' /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)"
+        run: |
+           last_stdout=$(xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/StdOut" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx 2>&1)
+           echo "$last_stdout"
+         
             # echo "::set-output name=last-stdout::$last_stdout"
 
           # passed=$(echo "$total_points" | grep -oP 'Passed\s*:\s*\K\d+')
@@ -93,7 +94,7 @@ jobs:
 
       - name: Display Test Results
         run: |
-         echo "Total Points: ${{ env.last_stdout }}"
+         echo "Total Points: ${{ steps.extract_results.outputs.total-points }}"
          # echo "Passed: ${{ steps.extract_results.outputs.passed }}"
          # echo "Failed: ${{ steps.extract_results.outputs.failed }}"
       # - uses: actions/checkout@v4
