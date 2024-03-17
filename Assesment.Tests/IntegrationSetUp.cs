@@ -22,15 +22,6 @@ namespace Assesment.Tests
         public void OneTimeTearDown()
         {
             // This method runs once after all tests
-            var AssetSuccess = 0;
-            var AssetFail = 0;
-            foreach (var e in ExamResults.ExamResultList)
-            {
-                AssetFail += e.Result.Assertions.Count();
-                AssetSuccess += e.AssertCount- e.Result.Assertions.Count();
-            }
-
-            TestContext.Progress.WriteLine($"Assert Success: {AssetSuccess},Assert Fail = {AssetFail}");
         }
 
         public void Dispose()
