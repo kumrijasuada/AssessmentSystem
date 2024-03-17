@@ -74,7 +74,7 @@ jobs:
         id: get_results
         if: env.test-results-exist == 'true'
         run: |
-          test_results=$(xmlstarlet sel -t -m "//UnitTestResult" -v "concat('Total Points: ', .//StdOut)" -n /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)
+          test_results=$(xmllint --xpath "string(//UnitTestResult/Output/StdOut)" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)
           echo "test-results=$test_results" >> $GITHUB_ENV
 
       # - name: Test Report
