@@ -52,21 +52,21 @@ jobs:
           NUGET_AUTH_TOKEN: ${{ secrets.NUGET_TOKEN }}
           GITHUB_TOKEN: ${{ github.token }}
 
-      - name: Run tests and generate HTML report
+      - name: Run tests
         run: |
-          mkdir -p ${{ github.workspace }}/test-results
-          dotnet test --logger "trx;LogFileName=${{ github.workspace }}/test-results/test-results.xml" --results-directory ${{ github.workspace }}/test-results --test-adapter-path:. -- NUnit.ConsoleRunner --result=${{ github.workspace }}/test-results/test-report.html;format=html || true
+          # Run your tests here and generate test result files
+          dotnet test --logger "trx;LogFileName=test-results.xml" || true
 
-      - name: Upload HTML test report
-        uses: actions/upload-artifact@v2
-        with:
-          name: test-report
-          path: ${{ github.workspace }}/test-results/test-report.html
+      - name: Parse test results
+        run: |
+          # Example: Parse NUnit XML test result files
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          dotnet reportgenerator -reports:"**/test-results.xml" -reporttypes:Html -targetdir:coverage
 
-      - name: Display link to HTML test report
-        run: echo "Test report available at ${{ steps.upload.outputs.artifact_url }}"
-
-
+      - name: Display test results
+        run: |
+          # Example: Output formatted test results to GitHub Actions log
+          cat coverage/index.html
 
 
 
