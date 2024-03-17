@@ -3,6 +3,7 @@ using NUnit.Framework.Internal;
 
 namespace Assesment.Tests
 {
+    [Order(0)]
     public class Tests
     {
         [Test]
