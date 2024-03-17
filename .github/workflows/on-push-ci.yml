@@ -15,10 +15,8 @@ jobs:
     permissions: read-all
     env:
       ACTIONS_STEP_DEBUG: true
-      # PROJECT_FILE_PATH: "AssesmentSystem/Assess.csproj"
 
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       - name: Checkout Code
         uses: actions/setup-dotnet@v3
@@ -29,11 +27,9 @@ jobs:
       - name: Debug Root Directory
         run: ls -la
 
-        # Dotnet restore (restore dependencies for all projects within the solution)
       - name: Dotnet restore solution
         run: dotnet restore AssessGrader.sln
 
-      # Dotnet build (build the entire solution)
       - name: Dotnet build solution
         run: dotnet build AssessGrader.sln
 
@@ -65,31 +61,4 @@ jobs:
           fail-on-error: 'false'
           only-summary: 'false'
 
-     # Add comment and update check run output
-      - name: Add Comment and Update Check Run Output
-        uses: actions/github-script@v4
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const { context, github } = require('@actions/github');
-
-            const checkRunId = context.payload.check_run.id;
-
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: checkRunId,
-              body: 'Your comment here'
-            });
-
-            await github.rest.checks.update({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              check_run_id: checkRunId,
-              output: {
-                title: 'Updated Check Run Output',
-                summary: 'This is the updated check run output.',
-                annotations: [] // Optionally, you can include annotations
-              }
-            });
 

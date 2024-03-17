@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework.Internal;
-using System.Diagnostics;
 
 namespace Assesment.Tests
 {
@@ -9,7 +8,7 @@ namespace Assesment.Tests
         public IntegrationSetUpFixture()
         {
             // runs before all tests
-            ExamResults.ExamResultList = new List<TestContext>();
+            ExamResults.ExamResultList = new List<ExamResult>();
         }
 
         [OneTimeSetUp]
@@ -27,7 +26,6 @@ namespace Assesment.Tests
         public void Dispose()
         {
             // This code runs once after all tests
-
         }
     }
 }

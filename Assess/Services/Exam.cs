@@ -9,5 +9,6 @@
 
             return charMap.OrderByDescending(v => v.Value).First().Key;
         }
+
     }
 }
