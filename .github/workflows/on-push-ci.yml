@@ -79,10 +79,10 @@ jobs:
       - name: Debug Test Results File Content
         run: cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
 
-      - name: Get Test Results
+      - name: Read XML element
         run: |
-           last_stdout=$(xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/StdOut" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)
-           echo "$last_stdout"
+          xml_output=$(xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/StdOut" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx 2>&1)
+          echo "$xml_output"
          
 
       - name: Display Test Results
