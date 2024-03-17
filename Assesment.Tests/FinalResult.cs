@@ -26,6 +26,7 @@ namespace Assesment.Tests
             resultBuilder.AppendLine();
 
             Console.WriteLine(resultBuilder.ToString()); 
+
         }
     }
 }
