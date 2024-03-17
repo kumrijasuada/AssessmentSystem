@@ -95,7 +95,7 @@ jobs:
 
       - name: Display Test Results
         run: |
-         echo "Total Points: ${{ steps.extract_results.outputs.total-points }}"
+         echo "Total Points: ${{ env.last_stdout }}"
          # echo "Passed: ${{ steps.extract_results.outputs.passed }}"
          # echo "Failed: ${{ steps.extract_results.outputs.failed }}"
       # - uses: actions/checkout@v4
