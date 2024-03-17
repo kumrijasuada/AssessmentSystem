@@ -37,6 +37,8 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     permissions: write-all
+    outputs:
+      test-results: ${{ steps.test.outputs.test-results }}
     steps:
       - uses: actions/checkout@v3
       - name: Checkout Code
@@ -51,14 +53,23 @@ jobs:
       - name: Test
         run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx" || true  *With this CI continue to run whether tests fail or not
         # run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx"
-      - name: Test Report
-        uses: dorny/test-reporter@v1
-        if: always()
-        with:
-          name: DotNET Tests
-          path: "**/test-results.trx"
-          reporter: dotnet-trx
-          fail-on-error: 'false'
-          only-summary: 'false'
+
+      - name: Run Tests and Get Results
+        id: test
+        run: |
+          dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx" || true
+          test_results=$(grep -oP 'Total Points: \d+\nPassed : \d+\nFail :  \d+' test-results.trx)
+          echo "::set-output name=test-results::$test_results"
+
+
+      # - name: Test Report
+      #   uses: dorny/test-reporter@v1
+      #   if: always()
+      #   with:
+      #     name: DotNET Tests
+      #     path: "**/test-results.trx"
+      #     reporter: dotnet-trx
+      #     fail-on-error: 'false'
+      #     only-summary: 'false'
 
 
