@@ -78,8 +78,7 @@ jobs:
       #       echo "test-results-exist=false" >> $GITHUB_ENV
       #     fi
 
-      # - name: Debug Test Results File Content
-      #   run: cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
+   
 
       # - name: Get Test Results
       #   id: get_results
