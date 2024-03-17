@@ -81,7 +81,7 @@ jobs:
 
       - name: Get Test Results
         run: |
-            echo /usr/bin/xmlstarlet sel -t -v "count(//UnitTestResult[last()]/Output/StdOut)" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
+             /usr/bin/xmlstarlet sel -t -v "count(//UnitTestResult[last()]/Output/StdOut)" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
             
 
           # passed=$(echo "$total_points" | grep -oP 'Passed\s*:\s*\K\d+')
