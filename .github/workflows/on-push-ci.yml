@@ -76,13 +76,13 @@ jobs:
       - name: List Test Results Directory
         run: ls -la /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/
 
-      - name: Debug Test Results File Content
+      - name: Print TRX file content
         run: cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
 
-      - name: Read XML element
+      - name: Read and process XML element
         run: |
-          xml_output=$(xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/StdOut" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx 2>&1)
-          echo "$xml_output"
+             xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/StdOut" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
+        shell: /usr/bin/bash -e {0}
          
 
       - name: Display Test Results
