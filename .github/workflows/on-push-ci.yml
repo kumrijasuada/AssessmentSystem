@@ -52,8 +52,7 @@ jobs:
           NUGET_AUTH_TOKEN: ${{ secrets.NUGET_TOKEN }}
           GITHUB_TOKEN: ${{ github.token }}
       - name: Run Tests
-        run: |
-          dotnet test ${{ vars.SOLUTION_PATH }} --logger "console;verbosity=detailed" > test_output.txt
+        run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "console;verbosity=detailed" > test_output.txt
 
       - name: Read test results
         id: read-results
