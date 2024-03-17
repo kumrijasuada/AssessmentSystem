@@ -79,7 +79,7 @@ jobs:
       - name: Get Test Results
         id: extract_results
         run: |
-          total_points=$(/usr/bin/xmlstarlet sel -t -v "//Text" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)
+          /usr/bin/xmlstarlet sel -t -v "//Text" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
           echo "::set-output name=total-points::$total_points"
           # passed=$(echo "$total_points" | grep -oP 'Passed\s*:\s*\K\d+')
           # failed=$(echo "$total_points" | grep -oP 'Fail\s*:\s*\K\d+')
