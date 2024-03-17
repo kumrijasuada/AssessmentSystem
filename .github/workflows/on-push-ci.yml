@@ -61,7 +61,7 @@ jobs:
         id: check_results
         run: |
           ls -la   # Debugging statement
-          if [ -f TestResults/test-results.trx ]; then
+          if [ -f /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx ]; then
             echo "test-results-exist=true" >> $GITHUB_ENV
           else
             echo "test-results-exist=false" >> $GITHUB_ENV
@@ -71,7 +71,7 @@ jobs:
         id: get_results
         if: env.test-results-exist == 'true'
         run: |
-          test_results=$(grep -oP 'Total Points: \d+\nPassed : \d+\nFail :  \d+' TestResults/test-results.trx)
+          test_results=$(grep -oP 'Total Points: \d+\nPassed : \d+\nFail :  \d+' /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)
           echo "test-results=$test_results" >> $GITHUB_ENV
 
       # - name: Test Report
