@@ -61,6 +61,7 @@ jobs:
       - name: Generate HTML test report
         run: dotnet reportgenerator -reports:"**/test-results.xml" -reporttypes:Html -targetdir:coverage
 
+
       - name: Upload test result files
         uses: actions/upload-artifact@v2
         with:
