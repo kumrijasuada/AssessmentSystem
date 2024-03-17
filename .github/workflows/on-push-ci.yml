@@ -80,17 +80,17 @@ jobs:
         id: get_results
         run: |
           total_points=$(xmlstarlet sel -t -v "//Text" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)
-          passed=$(echo "$total_points" | grep -oP 'Passed\s*:\s*\K\d+')
-          failed=$(echo "$total_points" | grep -oP 'Fail\s*:\s*\K\d+')
+          # passed=$(echo "$total_points" | grep -oP 'Passed\s*:\s*\K\d+')
+          # failed=$(echo "$total_points" | grep -oP 'Fail\s*:\s*\K\d+')
           echo "::set-output name=total-points::$total_points"
-          echo "::set-output name=passed::$passed"
-          echo "::set-output name=failed::$failed"
+          # echo "::set-output name=passed::$passed"
+          # echo "::set-output name=failed::$failed"
 
       - name: Display Test Results
         run: |
          echo "Total Points: ${{ steps.extract_results.outputs.total-points }}"
-         echo "Passed: ${{ steps.extract_results.outputs.passed }}"
-         echo "Failed: ${{ steps.extract_results.outputs.failed }}"
+         # echo "Passed: ${{ steps.extract_results.outputs.passed }}"
+         # echo "Failed: ${{ steps.extract_results.outputs.failed }}"
       # - uses: actions/checkout@v4
 
       # - name: dotnet test with coverage
