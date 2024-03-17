@@ -81,8 +81,10 @@ jobs:
 
       - name: Get Test Results
         run: |
-         last_stdout=$(/usr/bin/xmlstarlet sel -t -v "(//UnitTestResult[last()]/Output/StdOut)" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)
-         echo "${{ last_stdout }}"
+         echo "$last_stdout"
+         env:
+          last_stdout: /usr/bin/xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/StdOut" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
+         
             # echo "::set-output name=last-stdout::$last_stdout"
 
           # passed=$(echo "$total_points" | grep -oP 'Passed\s*:\s*\K\d+')
