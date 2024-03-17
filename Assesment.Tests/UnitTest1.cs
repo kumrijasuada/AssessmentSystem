@@ -10,12 +10,13 @@ namespace Assesment.Tests
         public void Test1()
         {
             Exam e = new();
-
-            Assert.AreEqual('a', e.GetMostFrequent("mamaaa"));
-            Assert.AreEqual('g', e.GetMostFrequent("gaga"));
-            Assert.AreEqual('a', e.GetMostFrequent("agag"));
-            Assert.AreEqual('3', e.GetMostFrequent("123123"));
-
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual('a', e.GetMostFrequent("mamaaa"));
+                Assert.AreEqual('g', e.GetMostFrequent("gaga"));
+                Assert.AreEqual('a', e.GetMostFrequent("agag"));
+                Assert.AreEqual('3', e.GetMostFrequent("123123"));
+            } );
            // TestExecutionContext.CurrentContext.OutWriter.WriteLine(TestExecutionContext.CurrentContext.CurrentResult);
             //Assert.Pass();
         }
@@ -24,10 +25,12 @@ namespace Assesment.Tests
         public void Test2()
         {
             Exam e = new();
-
-            Assert.AreEqual('a', e.GetMostFrequent("mamaaa"));
-            Assert.AreEqual('g', e.GetMostFrequent("gaga"));
-            Assert.AreEqual('3', e.GetMostFrequent("12312312333456"));
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual('a', e.GetMostFrequent("mamaaa"));
+                Assert.AreEqual('g', e.GetMostFrequent("gaga"));
+                Assert.AreEqual('3', e.GetMostFrequent("12312312333456"));
+            } );
             // TestExecutionContext.CurrentContext.OutWriter.WriteLine(TestExecutionContext.CurrentContext.CurrentResult);
 
             //Assert.Pass();
