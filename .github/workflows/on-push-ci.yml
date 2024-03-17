@@ -54,6 +54,9 @@ jobs:
         run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx" || true  *With this CI continue to run whether tests fail or not
         # run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx"
 
+      - name: Debug Test Results Directory
+        run: ls -la /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults
+
       - name: Check Test Results File
         id: check_results
         run: |
