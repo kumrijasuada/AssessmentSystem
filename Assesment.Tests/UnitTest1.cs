@@ -15,7 +15,7 @@ namespace Assesment.Tests
                 Assert.AreEqual('a', e.GetMostFrequent("mamaaa"));
                 Assert.AreEqual('g', e.GetMostFrequent("gaga"));
                 Assert.AreEqual('a', e.GetMostFrequent("agag"));
-                Assert.AreEqual('3', e.GetMostFrequent("12312312333456"));
+                Assert.AreEqual('3', e.GetMostFrequent("123123"));
             } );
            // TestExecutionContext.CurrentContext.OutWriter.WriteLine(TestExecutionContext.CurrentContext.CurrentResult);
             //Assert.Pass();
