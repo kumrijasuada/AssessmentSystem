@@ -21,8 +21,7 @@ namespace Assesment.Tests
                 AssetFail += e.Result.Assertions.Count();
                 AssetSuccess += e.AssertCount - e.Result.Assertions.Count();
             }
-
-            Console.WriteLine($"Assert Success: {AssetSuccess},Assert Fail = {AssetFail}");
+            Assert.Inconclusive($"Assert Success: {AssetSuccess},Assert Fail = {AssetFail}");
         }
     }
 }
