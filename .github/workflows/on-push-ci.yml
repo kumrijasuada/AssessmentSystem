@@ -80,11 +80,9 @@ jobs:
         run: cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
 
       - name: Get Test Results
-        run: 
-         echo "$last_stdout"
+        run: echo "$last_stdout"
         env:
-          last_stdout: /usr/bin/xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/StdOut" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
-         
+         last_stdout: "$(xmlstarlet sel -t -v '//UnitTestResult[last()]/Output/StdOut' /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)"
             # echo "::set-output name=last-stdout::$last_stdout"
 
           # passed=$(echo "$total_points" | grep -oP 'Passed\s*:\s*\K\d+')
