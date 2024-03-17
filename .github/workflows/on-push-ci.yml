@@ -55,7 +55,7 @@ jobs:
 
 
       - name: Run tests and save results to file
-        run: dotnet test --logger "nunit;LogFilePath=test-results.xml" || true
+        run: dotnet test --logger "trx;LogFileName=test-results.xml" || true
 
       - name: Upload test results
         uses: actions/upload-artifact@v2
