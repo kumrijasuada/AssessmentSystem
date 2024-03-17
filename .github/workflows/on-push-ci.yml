@@ -57,7 +57,7 @@ jobs:
       - name: Check Test Results File
         id: check_results
         run: |
-          ls -la TestResults  # Debugging statement
+          ls -la   # Debugging statement
           if [ -f TestResults/test-results.trx ]; then
             echo "test-results-exist=true" >> $GITHUB_ENV
           else
