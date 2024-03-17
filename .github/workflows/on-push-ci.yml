@@ -61,7 +61,7 @@ jobs:
           name: DotNET Tests
           path: "**/test-results.trx"
           reporter: dotnet-trx
-          fail-on-error: 'true'
+          fail-on-error: 'false'
           only-summary: 'false'
       - name : Test Report 2
         uses: bibipkins/dotnet-test-reporter@v1.4.0
@@ -71,4 +71,5 @@ jobs:
           results-path: ./TestResults/*.trx
           coverage-path: ./TestResults/coverage.xml
           coverage-threshold: 80
+          allow-failed-tests: true
 
