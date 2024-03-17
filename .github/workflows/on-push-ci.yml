@@ -51,25 +51,36 @@ jobs:
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.NUGET_TOKEN }}
           GITHUB_TOKEN: ${{ github.token }}
-      - name: Test
-        # run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx" || true  *With this CI continue to run whether tests fail or not
-        run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx"
-      - name: Test Report
-        uses: dorny/test-reporter@v1
-        if: always()
-        with:
-          name: DotNET Tests
-          path: "**/test-results.trx"
-          reporter: dotnet-trx
-          fail-on-error: 'false'
-          only-summary: 'false'
-      - name: Test Report 2
-        uses: bibipkins/dotnet-test-reporter@v1.4.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          comment-title: 'Unit Test Results'
-          results-path: ./TestResults/*.trx
-          coverage-path: ./TestResults/coverage.xml
-          coverage-threshold: 80
-          allow-failed-tests: 'true'
+      - name: Run Tests
+        run: |
+          dotnet test ${{ vars.SOLUTION_PATH }} --logger "console;verbosity=detailed" > test_output.txt
+
+      - name: Read test results
+        id: read-results
+        run: |
+          echo "::set-output name=test-results::$(cat test_output.txt)"
+
+      - name: Print test results
+        run: echo "${{ steps.read-results.outputs.test-results }}"
+      # - name: Test
+      #   # run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx" || true  *With this CI continue to run whether tests fail or not
+      #   run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx"
+      # - name: Test Report
+      #   uses: dorny/test-reporter@v1
+      #   if: always()
+      #   with:
+      #     name: DotNET Tests
+      #     path: "**/test-results.trx"
+      #     reporter: dotnet-trx
+      #     fail-on-error: 'false'
+      #     only-summary: 'false'
+      # - name: Test Report 2
+      #   uses: bibipkins/dotnet-test-reporter@v1.4.0
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     comment-title: 'Unit Test Results'
+      #     results-path: ./TestResults/*.trx
+      #     coverage-path: ./TestResults/coverage.xml
+      #     coverage-threshold: 80
+      #     allow-failed-tests: 'true'
 
