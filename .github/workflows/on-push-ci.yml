@@ -79,9 +79,9 @@ jobs:
       - name: Get Test Results
         id: get_results
         run: |
-          total_points=$(xmlstarlet sel -t -v "//Counters/@total" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)
-          passed=$(xmlstarlet sel -t -v "//Counters/@passed" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)
-          failed=$(xmlstarlet sel -t -v "//Counters/@failed" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)
+          total_points=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "//ns:Counters/@total" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)
+          passed=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "//ns:Counters/@passed" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)
+          failed=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "//ns:Counters/@failed" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)
           echo "total-points=$total_points" >> $GITHUB_ENV
           echo "passed=$passed" >> $GITHUB_ENV
           echo "failed=$failed" >> $GITHUB_ENV
