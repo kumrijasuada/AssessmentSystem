@@ -70,7 +70,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           comment-title: 'Unit Test Results'
-          results-path: ./TestResults/*.trx
+          results-path: "**/test-results.trx"
           coverage-path: ./TestResults/coverage.xml
           coverage-threshold: 80
           allow-failed-tests: 'true'
