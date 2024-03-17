@@ -74,7 +74,7 @@ jobs:
         id: get_results
         if: env.test-results-exist == 'true'
         run: |
-          test_results=$(xmllint --xpath "string(//UnitTestResult/Output/StdOut)" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)
+          test_results=$(cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx | grep -oP '(?<=<StdOut>).*?(?=</StdOut>)')
           echo "test-results=$test_results" >> $GITHUB_ENV
 
       # - name: Test Report
