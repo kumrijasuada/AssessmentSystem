@@ -53,13 +53,15 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Run tests and generate HTML report
-        run: dotnet test --logger "trx;LogFileName=test-results.xml" --results-directory /path/to/results --test-adapter-path:. -- NUnit.ConsoleRunner --result=/path/to/results/test-report.html;format=html || true
+        run: |
+          mkdir -p ${{ github.workspace }}/test-results
+          dotnet test --logger "trx;LogFileName=${{ github.workspace }}/test-results/test-results.xml" --results-directory ${{ github.workspace }}/test-results --test-adapter-path:. -- NUnit.ConsoleRunner --result=${{ github.workspace }}/test-results/test-report.html;format=html || true
 
       - name: Upload HTML test report
         uses: actions/upload-artifact@v2
         with:
           name: test-report
-          path: /path/to/results/test-report.html
+          path: ${{ github.workspace }}/test-results/test-report.html
 
       - name: Display link to HTML test report
         run: echo "Test report available at ${{ steps.upload.outputs.artifact_url }}"
