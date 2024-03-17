@@ -52,18 +52,17 @@ jobs:
           NUGET_AUTH_TOKEN: ${{ secrets.NUGET_TOKEN }}
           GITHUB_TOKEN: ${{ github.token }}
 
-      - name: Run tests and save results to file
-        run: dotnet test --logger "trx;LogFileName=/path/to/test-results.xml" || true
+      - name: Run tests and generate HTML report
+        run: dotnet test --logger "trx;LogFileName=test-results.xml" --results-directory /path/to/results --test-adapter-path:. -- NUnit.ConsoleRunner --result=/path/to/results/test-report.html;format=html || true
 
-      - name: List directory contents
-        run: ls -R
-
-      - name: Upload test results
+      - name: Upload HTML test report
         uses: actions/upload-artifact@v2
         with:
-          name: test-results
-          path: test-results.xml
+          name: test-report
+          path: /path/to/results/test-report.html
 
+      - name: Display link to HTML test report
+        run: echo "Test report available at ${{ steps.upload.outputs.artifact_url }}"
 
 
 
