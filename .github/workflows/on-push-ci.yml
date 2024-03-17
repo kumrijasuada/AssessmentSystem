@@ -51,31 +51,31 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Test
-        run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx" || true  *With this CI continue to run whether tests fail or not
+        run: dotnet test ${{ vars.SOLUTION_PATH }} #--logger "trx;LogFileName=test-results.trx" || true  *With this CI continue to run whether tests fail or not
         # run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx"
 
-      - name: Debug Test Results Directory
-        run: ls -la /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults
+      # - name: Debug Test Results Directory
+      #   run: ls -la /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults
 
-      - name: Check Test Results File
-        id: check_results
-        run: |
-          ls -la   # Debugging statement
-          if [ -f /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx ]; then
-            echo "test-results-exist=true" >> $GITHUB_ENV
-          else
-            echo "test-results-exist=false" >> $GITHUB_ENV
-          fi
+      # - name: Check Test Results File
+      #   id: check_results
+      #   run: |
+      #     ls -la   # Debugging statement
+      #     if [ -f /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx ]; then
+      #       echo "test-results-exist=true" >> $GITHUB_ENV
+      #     else
+      #       echo "test-results-exist=false" >> $GITHUB_ENV
+      #     fi
 
-      - name: Debug Test Results File Content
-        run: cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
+      # - name: Debug Test Results File Content
+      #   run: cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
 
-      - name: Get Test Results
-        id: get_results
-        if: env.test-results-exist == 'true'
-        run: |
-          test_results=$(cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx | grep -oP '(?<=<StdOut>).*?(?=</StdOut>)')
-          echo "test-results=$test_results" >> $GITHUB_ENV
+      # - name: Get Test Results
+      #   id: get_results
+      #   if: env.test-results-exist == 'true'
+      #   run: |
+      #     test_results=$(cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx | grep -oP '(?<=<StdOut>).*?(?=</StdOut>)')
+      #     echo "test-results=$test_results" >> $GITHUB_ENV
 
       # - name: Test Report
       #   uses: dorny/test-reporter@v1
