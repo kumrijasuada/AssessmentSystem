@@ -65,7 +65,7 @@ jobs:
 
       - name: Get Test Results
         id: get_results
-        if: env.TEST_RESULTS_EXIST == 'true'
+        if: env.test-results-exist == 'true'
         run: |
           test_results=$(grep -oP 'Total Points: \d+\nPassed : \d+\nFail :  \d+' TestResults/test-results.trx)
           echo "test-results=$test_results" >> $GITHUB_ENV
