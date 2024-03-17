@@ -81,16 +81,9 @@ jobs:
 
       - name: Get Test Results
         run: |
-           last_stdout=$(xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/StdOut" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx 2>&1)
+           last_stdout=$(xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/StdOut" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)
            echo "$last_stdout"
          
-            # echo "::set-output name=last-stdout::$last_stdout"
-
-          # passed=$(echo "$total_points" | grep -oP 'Passed\s*:\s*\K\d+')
-          # failed=$(echo "$total_points" | grep -oP 'Fail\s*:\s*\K\d+')
-          # echo "::set-output name=total-points::$total_points"
-          # echo "::set-output name=passed::$passed"
-          # echo "::set-output name=failed::$failed"
 
       - name: Display Test Results
         run: |
