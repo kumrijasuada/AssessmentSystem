@@ -3,8 +3,8 @@ name: CI/CD On Push Workflow
 on:
   push:
     branches: [ "main" ]
-  # pull_request:
-  #   branches: [ "main"]
+  pull_request:
+    branches: [ "main"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -50,21 +50,48 @@ jobs:
           NUGET_AUTH_TOKEN: ${{ secrets.NUGET_TOKEN }}
           GITHUB_TOKEN: ${{ github.token }}
 
-      # - name: Test
-      #   run: dotnet test ${{ vars.SOLUTION_PATH }} #--logger "trx;LogFileName=test-results.trx" || true  *With this CI continue to run whether tests fail or not
+        # Replace this whichever way you build your code
+      # - name: Build & Test dotnet code
+      #   run: |
+      #     dotnet restore
+      #     dotnet build -c Release no-restore
+      #     dotnet test -c Release --no-restore --no-build --logger trx --results-directory ./TestResults || true
+      # # Using the trx-parser action
+      # - name: Parse Trx files
+      #   uses: NasAmin/trx-parser@v0.1
+      #   id: trx-parser
+      #   with:
+      #     TRX_PATH: ${{ github.workspace }}/TestResults #This should be the path to your TRX files
+      #     REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}       
+
+      - name: Test
+        run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx" || true  *With this CI continue to run whether tests fail or not
         # run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx"
+      - name: Install xmlstarlet
+        run: sudo apt-get update && sudo apt-get install -y xmlstarlet
 
-      - uses: actions/checkout@v4
+      - name: Get Test Results
+        id: get_results
+        if: env.test-results-exist == 'true'
+        run: |
+          total_points=$(xmlstarlet sel -t -v "//Counters/@total" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)
+          passed=$(xmlstarlet sel -t -v "//Counters/@passed" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)
+          failed=$(xmlstarlet sel -t -v "//Counters/@failed" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)
+          echo "total-points=$total_points" >> $GITHUB_ENV
+          echo "passed=$passed" >> $GITHUB_ENV
+          echo "failed=$failed" >> $GITHUB_ENV
+          echo "::set-output name=test-results::Total Points: $total_points Passed: $passed Failed: $failed"
+      # - uses: actions/checkout@v4
 
-      - name: dotnet test with coverage
-        run: dotnet test ${{ vars.SOLUTION_PATH }} --logger trx --configuration Release || true
+      # - name: dotnet test with coverage
+      #   run: dotnet test ${{ vars.SOLUTION_PATH }} --logger trx --configuration Release || true
 
-      - name: Process trx reports with default
-        if: always()
-        # You may also reference just the major or major.minor version
-        uses: im-open/process-dotnet-test-results@v2.4.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Process trx reports with default
+      #   if: always()
+      #   # You may also reference just the major or major.minor version
+      #   uses: im-open/process-dotnet-test-results@v2.4.0
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
       # - name: Debug Test Results Directory
       #   run: ls -la /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults
 
