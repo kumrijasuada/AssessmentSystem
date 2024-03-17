@@ -70,9 +70,12 @@ jobs:
       - name: Install xmlstarlet
         run: sudo apt-get update && sudo apt-get install -y xmlstarlet
 
+      - name: List Test Results Directory
+        run: ls -la /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/
+
+
       - name: Get Test Results
         id: get_results
-        if: env.test-results-exist == 'true'
         run: |
           total_points=$(xmlstarlet sel -t -v "//Counters/@total" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)
           passed=$(xmlstarlet sel -t -v "//Counters/@passed" /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)
