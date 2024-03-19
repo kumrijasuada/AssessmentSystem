@@ -87,8 +87,12 @@ jobs:
       #   id: my_string   
 
       - name: Display data
-        run: |
-          /usr/bin/bash --noprofile --norc -c "cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx | xmlstarlet sel -t -v \"//UnitTestResult[1]/Output/StdOut\" -n"
+        uses: Mudlet/xmlstarlet-action@main
+        id: xml_replace
+        with: 
+          args: ed -L --sel -t -v "//UnitTestResult[1]/Output/StdOut" -n/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
+        # run: |
+          # /usr/bin/bash --noprofile --norc -c "cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx | xmlstarlet sel -t -v \"//UnitTestResult[1]/Output/StdOut\" -n"
 
 
         # run: echo "$(cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)"
