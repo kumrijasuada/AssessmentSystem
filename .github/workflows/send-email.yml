@@ -26,6 +26,12 @@ jobs:
       - name: Print pull request number
         run: echo "Last pull request number is ${{ steps.get-pr-number.outputs.pr_number }}"
 
+      - name: Read values from XML
+        id: read-xml
+        run: |
+          # Commands to read values from XML file and set them as output variables
+          echo "::set-output name=stdout::${{ steps.read-xml.outputs.stdout }}"
+
       - name: Add Comment
         uses: actions/github-script@v5
         with:
@@ -35,7 +41,7 @@ jobs:
               issue_number: ${{ steps.get-pr-number.outputs.pr_number }},
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Unit tests completed successfully!!'
+              body: 'Unit tests completed successfully with the following results: ${{ steps.read-xml.outputs.stdout }}'
             })
 
 

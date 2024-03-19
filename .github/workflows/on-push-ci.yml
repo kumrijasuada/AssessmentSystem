@@ -77,11 +77,11 @@ jobs:
          echo "::set-output name=stdout::$stdout"
 
 
-
-
       - name: Print values from XML
+        id: print-xml-values
         run: |
-          echo "${{ steps.read-xml.outputs.stdout }}"
+         echo "::set-output name=xml-value::${{ steps.read-xml.outputs.stdout }}"
+
 
 
    
