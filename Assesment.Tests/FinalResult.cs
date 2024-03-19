@@ -26,7 +26,7 @@ namespace Assesment.Tests
             //resultBuilder.AppendLine($"Fail :  {totalFailedPoints}");
             //resultBuilder.AppendLine();
 
-            Console.Write(data); 
+            Console.WriteLine(data); 
 
         }
     }
