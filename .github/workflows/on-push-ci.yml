@@ -76,6 +76,9 @@ jobs:
          stdout=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "$xpath_expression" -n "$xml_file")
          echo "::set-output name=stdout::$stdout"
 
+
+
+
       - name: Print values from XML
         run: |
           echo "${{ steps.read-xml.outputs.stdout }}"
