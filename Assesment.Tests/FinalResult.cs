@@ -19,13 +19,13 @@ namespace Assesment.Tests
                 totalEarnedPoints += TestResult.EarnedPoints;
                 totalFailedPoints += TestResult.FailedPoints;
             }
-            string data = $"TotalPoints: {totalPoints}, Passed: {totalEarnedPoints}, Fail: {totalFailedPoints}";
+            //string data = $"TotalPoints: {totalPoints}, Passed: {totalEarnedPoints}, Fail: {totalFailedPoints}";
             //resultBuilder.AppendLine();
-            //resultBuilder.AppendLine($"Total Points : {totalPoints}");
-            //resultBuilder.AppendLine($"Passed : {totalEarnedPoints}");
-            //resultBuilder.AppendLine($"Fail :  {totalFailedPoints}");
-            //resultBuilder.AppendLine();
-            Console.WriteLine(data); 
+            resultBuilder.AppendLine($"Total Points : {totalPoints}");
+            resultBuilder.AppendLine($"Passed : {totalEarnedPoints}");
+            resultBuilder.AppendLine($"Fail :  {totalFailedPoints}");
+            resultBuilder.AppendLine();
+            Console.WriteLine(resultBuilder.ToString()); 
         }
     }
 }
