@@ -107,7 +107,7 @@ jobs:
       - name: Print values from XML
         run: |
           echo "Values from XML:"
-          echo "Points: ${{ steps.read-xml.outputs.stdout }}"
+          echo "${{ steps.read-xml.outputs.stdout }}"
 
         # run: echo "$(cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)"
             # specific_element=$(echo "$xml_content" | xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/StdOut")
