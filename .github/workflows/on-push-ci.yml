@@ -88,9 +88,7 @@ jobs:
 
       - name: Display data
         run: |
-         cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx | xmlstarlet sel -t -v "//UnitTestResult[1]/Output/StdOut" -n
-        shell: bash
-
+          /usr/bin/bash --noprofile --norc -c "cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx | xmlstarlet sel -t -v \"//UnitTestResult[1]/Output/StdOut\" -n"
 
 
         # run: echo "$(cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)"
