@@ -99,8 +99,18 @@ jobs:
         run: |
           xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
           xpath_expression="//ns:UnitTestResult[last()]/ns:Output/ns:StdOut"
+          
           stdout=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "$xpath_expression" -n "$xml_file")
+          
+          stdout="${stdout//$'\n'/'\n    '}" 
+
           echo "::set-output name=stdout::$stdout"
+
+      - name: Print values from XML
+        run: |
+          echo "Values from XML:"
+          echo |
+            ${{ steps.read-xml.outputs.stdout }}
 
         # run: echo "$(cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)"
             # specific_element=$(echo "$xml_content" | xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/StdOut")
@@ -108,9 +118,9 @@ jobs:
         # shell: bash
          
 
-      - name: Display Test Results
-        run: |
-         echo "Total Points: ${{ steps.extract_results.outputs.total-points }}"
+      # - name: Display Test Results
+      #   run: |
+      #    echo "Total Points: ${{ steps.extract_results.outputs.total-points }}"
          # echo "Passed: ${{ steps.extract_results.outputs.passed }}"
          # echo "Failed: ${{ steps.extract_results.outputs.failed }}"
       # - uses: actions/checkout@v4
