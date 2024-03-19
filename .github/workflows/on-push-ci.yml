@@ -80,10 +80,9 @@ jobs:
         run: cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
 
       - name: Get XML content
-        run: |
-            # xml_content=$(cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)
+        run: echo ${{(cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)}}
             # specific_element=$(echo "$xml_content" | xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/StdOut")
-            echo "Specific element: "
+            # echo "Specific element: $specific_element"
         # shell: bash
          
 
