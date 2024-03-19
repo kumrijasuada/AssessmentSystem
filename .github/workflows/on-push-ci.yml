@@ -12,7 +12,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions: read-all
+    permissions:
+      contents: read
+      packages: write
+      actions: write
     env:
       ACTIONS_STEP_DEBUG: true
 
