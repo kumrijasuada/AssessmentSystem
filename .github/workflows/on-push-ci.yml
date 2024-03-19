@@ -97,12 +97,12 @@ jobs:
       - name: Read values from XML file
         id: read-xml
         run: |
-          xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
-          xpath_expression="//ns:UnitTestResult[last()]/ns:Output/ns:StdOut"
+         xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
+         xpath_expression="//ns:UnitTestResult[last()]/ns:Output/ns:StdOut"
 
-          stdout=$(xmlstarlet sel -t -v "$xpath_expression" -n -n "$xml_file")
+         stdout=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "$xpath_expression" -n "$xml_file")
 
-          echo "::set-output name=stdout::$stdout"
+         echo "::set-output name=stdout::$stdout"
 
         # run: echo "$(cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)"
             # specific_element=$(echo "$xml_content" | xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/StdOut")
