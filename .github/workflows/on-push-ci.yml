@@ -102,9 +102,6 @@ jobs:
 
          stdout=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "$xpath_expression" -n "$xml_file")
 
-         # Replace newlines with YAML newline indicators
-         stdout="${stdout//$'\n'/'\n    '}" 
-
          echo "::set-output name=stdout::$stdout"
 
       - name: Print values from XML
