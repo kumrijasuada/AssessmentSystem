@@ -27,8 +27,8 @@ jobs:
           dotnet-version: ${{ vars.DOTNET_VERSION }}
           source-url: ${{ vars.NUGET_SOURCE_URL }}
 
-      - name: Debug Root Directory
-        run: ls -la
+      # - name: Debug Root Directory
+      #   run: ls -la
 
       - name: Dotnet restore solution
         run: dotnet restore AssessGrader.sln
@@ -62,8 +62,8 @@ jobs:
       - name: Check xmlstarlet installation path
         run: which xmlstarlet
 
-      - name: List Test Results Directory
-        run: ls -la /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/
+      # - name: List Test Results Directory
+        # run: ls -la /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/
 
       - name: Print TRX file content
         run: cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
@@ -75,7 +75,6 @@ jobs:
          xpath_expression="//ns:UnitTestResult[last()]/ns:Output/ns:StdOut"
          stdout=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "$xpath_expression" -n "$xml_file")
          echo "::set-output name=stdout::$stdout"
-
 
       - name: Print values from XML
         id: print-xml-values
