@@ -67,6 +67,7 @@ jobs:
       - name: Test
         run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx" || true  *With this CI continue to run whether tests fail or not
         # run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx"
+
       - name: Install xmlstarlet
         run: sudo apt-get update && sudo apt-get install -y xmlstarlet
 
@@ -86,8 +87,7 @@ jobs:
         id: my_string   
 
       - name: Display data
-        run: |
-          echo "The string is: ${{ steps.my_string.outputs.content }} | xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/StdOut"
+        run: xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/StdOut" -v Identity -n /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
 
         # run: echo "$(cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)"
             # specific_element=$(echo "$xml_content" | xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/StdOut")
