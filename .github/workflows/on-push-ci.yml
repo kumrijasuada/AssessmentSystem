@@ -99,9 +99,9 @@ jobs:
         run: |
          xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
          xpath_expression="//ns:UnitTestResult[last()]/ns:Output/ns:StdOut"
-
+  
          stdout=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "$xpath_expression" -n "$xml_file")
-
+  
          echo "::set-output name=stdout::$stdout"
 
       - name: Print values from XML
