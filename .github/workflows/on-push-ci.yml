@@ -62,9 +62,6 @@ jobs:
       - name: Check xmlstarlet installation path
         run: which xmlstarlet
 
-      # - name: List Test Results Directory
-        # run: ls -la /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/
-
       - name: Print TRX file content
         run: cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
 
