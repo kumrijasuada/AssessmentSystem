@@ -79,12 +79,16 @@ jobs:
       - name: Print TRX file content
         run: cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
 
-      - name: Get XML content
+      - name: Get XML content and debug
         run: |
-            xml_content=$(< /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)
-            specific_element=$(echo "$xml_content" | grep -Po '(?<=<StdOut>).*?(?=</StdOut>)' | tail -n 1 | sed 's/^\s*//;s/\s*$//')
-            echo "Specific element: $specific_element"
+         xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
+         echo "Contents of XML file:"
+         cat "$xml_file"
+         xml_content=$(< "$xml_file")
+         specific_element=$(echo "$xml_content" | grep -Po '(?<=<StdOut>).*?(?=</StdOut>)' | tail -n 1 | sed 's/^\s*//;s/\s*$//')
+         echo "Specific element: $specific_element"
         shell: bash
+
 
       # - name: Get XML content
       #   run: |
