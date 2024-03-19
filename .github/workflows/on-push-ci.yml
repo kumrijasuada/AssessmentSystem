@@ -50,23 +50,8 @@ jobs:
           NUGET_AUTH_TOKEN: ${{ secrets.NUGET_TOKEN }}
           GITHUB_TOKEN: ${{ github.token }}
 
-        # Replace this whichever way you build your code
-      # - name: Build & Test dotnet code
-      #   run: |
-      #     dotnet restore
-      #     dotnet build -c Release no-restore
-      #     dotnet test -c Release --no-restore --no-build --logger trx --results-directory ./TestResults || true
-      # # Using the trx-parser action
-      # - name: Parse Trx files
-      #   uses: NasAmin/trx-parser@v0.1
-      #   id: trx-parser
-      #   with:
-      #     TRX_PATH: ${{ github.workspace }}/TestResults #This should be the path to your TRX files
-      #     REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}       
-
       - name: Test
         run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx" || true  *With this CI continue to run whether tests fail or not
-        # run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx"
 
       - name: Install xmlstarlet
         run: sudo apt-get update && sudo apt-get install -y xmlstarlet
@@ -80,87 +65,20 @@ jobs:
       - name: Print TRX file content
         run: cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
 
-      # - name: Get XML content
-      #   run: |
-      #     MY_STRING=$(cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)
-      #     echo "::set-output name=content::$MY_STRING"
-      #   id: my_string   
-
-      # - name: Display data
-      #   uses: Mudlet/xmlstarlet-action@main
-      #   id: xml_replace
-      #   with: 
-      #     args: ed -L --sel -t -v "//UnitTestResult[1]/Output/StdOut" -n/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
-      #   # run: |
-          # /usr/bin/bash --noprofile --norc -c "cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx | xmlstarlet sel -t -v \"//UnitTestResult[1]/Output/StdOut\" -n"
-
       - name: Read values from XML file
         id: read-xml
         run: |
          xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
          xpath_expression="//ns:UnitTestResult[last()]/ns:Output/ns:StdOut"
-  
          stdout=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "$xpath_expression" -n "$xml_file")
-  
-         # echo "::set-output name=stdout::$stdout"
 
       - name: Print values from XML
         run: |
-          # echo "Values from XML:"
           echo "${{ steps.read-xml.outputs.stdout }}"
 
-        # run: echo "$(cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)"
-            # specific_element=$(echo "$xml_content" | xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/StdOut")
-            # echo "Specific element: $specific_element"
-        # shell: bash
-         
-
-      # - name: Display Test Results
-      #   run: |
-      #    echo "Total Points: ${{ steps.extract_results.outputs.total-points }}"
-         # echo "Passed: ${{ steps.extract_results.outputs.passed }}"
-         # echo "Failed: ${{ steps.extract_results.outputs.failed }}"
-      # - uses: actions/checkout@v4
-
-      # - name: dotnet test with coverage
-      #   run: dotnet test ${{ vars.SOLUTION_PATH }} --logger trx --configuration Release || true
-
-      # - name: Process trx reports with default
-      #   if: always()
-      #   # You may also reference just the major or major.minor version
-      #   uses: im-open/process-dotnet-test-results@v2.4.0
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      # - name: Debug Test Results Directory
-      #   run: ls -la /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults
-
-      # - name: Check Test Results File
-      #   id: check_results
-      #   run: |
-      #     ls -la   # Debugging statement
-      #     if [ -f /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx ]; then
-      #       echo "test-results-exist=true" >> $GITHUB_ENV
-      #     else
-      #       echo "test-results-exist=false" >> $GITHUB_ENV
-      #     fi
 
    
 
-      # - name: Get Test Results
-      #   id: get_results
-      #   if: env.test-results-exist == 'true'
-      #   run: |
-      #     test_results=$(cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx | grep -oP '(?<=<StdOut>).*?(?=</StdOut>)')
-      #     echo "test-results=$test_results" >> $GITHUB_ENV
 
-      # - name: Test Report
-      #   uses: dorny/test-reporter@v1
-      #   if: always()
-      #   with:
-      #     name: DotNET Tests
-      #     path: "**/test-results.trx"
-      #     reporter: dotnet-trx
-      #     fail-on-error: 'false'
-      #     only-summary: 'false'
 
 
