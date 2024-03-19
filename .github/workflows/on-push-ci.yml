@@ -97,20 +97,22 @@ jobs:
       - name: Read values from XML file
         id: read-xml
         run: |
-          xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
-          xpath_expression="//ns:UnitTestResult[last()]/ns:Output/ns:StdOut"
-          
-          stdout=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "$xpath_expression" -n "$xml_file")
-          
-          stdout="${stdout//$'\n'/'\n    '}" 
+         xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
+         xpath_expression="//ns:UnitTestResult[last()]/ns:Output/ns:StdOut/text()"
 
-          echo "::set-output name=stdout::$stdout"
+         stdout=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "$xpath_expression" -n "$xml_file")
+
+         # Replace newlines with YAML newline indicators
+         stdout="${stdout//$'\n'/'\n    '}" 
+
+         echo "::set-output name=stdout::$stdout"
 
       - name: Print values from XML
         run: |
           echo "Values from XML:"
-          echo |
-            ${{ steps.read-xml.outputs.stdout }}
+          echo "Total Points: ${{ steps.read-xml.outputs.stdout | split('\n')[0] }}"
+          echo "Passed: ${{ steps.read-xml.outputs.stdout | split('\n')[1] }}"
+          echo "Fail: ${{ steps.read-xml.outputs.stdout | split('\n')[2] }}"
 
         # run: echo "$(cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)"
             # specific_element=$(echo "$xml_content" | xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/StdOut")
