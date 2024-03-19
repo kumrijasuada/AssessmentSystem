@@ -87,7 +87,7 @@ jobs:
         id: my_string   
 
       - name: Display data
-        run: xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/StdOut" -v Identity -n /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
+        run: xmlstarlet sel -t -v "//UnitTestResult[1]/Output/StdOut" -v Identity -n /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
 
         # run: echo "$(cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx)"
             # specific_element=$(echo "$xml_content" | xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/StdOut")
