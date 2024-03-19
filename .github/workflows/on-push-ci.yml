@@ -104,12 +104,6 @@ jobs:
 
          echo "::set-output name=stdout::$stdout"
 
-    
-      - name: Print values from XML
-        run: |
-          echo "Values from XML:"
-          echo "${{ steps.read-xml.outputs.stdout }}"
-
       - name: Display Test Results
         run: |
          echo "Total Points: ${{ steps.extract_results.outputs.total-points }}"
