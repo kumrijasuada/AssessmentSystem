@@ -3,8 +3,8 @@ name: CI/CD On Push Workflow
 on:
   push:
     branches: [ "main" ]
-  # pull_request:
-  #   branches: [ "main"]
+  pull_request:
+    branches: [ "main"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -62,8 +62,8 @@ jobs:
       - name: Check xmlstarlet installation path
         run: which xmlstarlet
 
-      # - name: List Test Results Directory
-        # run: ls -la /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/
+      - name: List Test Results Directory
+        run: ls -la /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/
 
       - name: Print TRX file content
         run: cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
@@ -80,13 +80,4 @@ jobs:
         id: print-xml-values
         run: |
          echo "::set-output name=xml-value::${{ steps.read-xml.outputs.stdout }}"
-
-
-
-
-
-   
-
-
-
 
