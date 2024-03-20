@@ -72,8 +72,8 @@ jobs:
         id: read-xml
         run: |
          xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
-         result=$(xmlstarlet sel -t -c "/" "$xml_file")
-         echo "TRX_CONTENT=${result//'%'/'%25'}" >> $GITHUB_ENV
+         xmlstarlet sel -t -c "/" "$xml_file" > trx_content.xml
+         echo "TRX_FILE_PATH=trx_content.xml" >> $GITHUB_ENV
          # xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
          # xpath_expression="//ns:UnitTestResult[last()]/ns:Output/ns:StdOut"
          # stdout=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "$xpath_expression" -n "$xml_file")
@@ -81,5 +81,5 @@ jobs:
 
       - name: Print TRX content
         run: |
-          echo "${{ env.TRX_CONTENT }}"
+          cat "${{ env.TRX_FILE_PATH }}"
 
