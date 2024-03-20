@@ -57,7 +57,7 @@ jobs:
         run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx" || true  *With this CI continue to run whether tests fail or not
 
       - name: Install xmlstarlet
-        run: sudo apt-get update && sudo apt-get install -y xmlstarlet
+        run: sudo apt-get update xmlstarlet
 
       - name: Check xmlstarlet installation path
         run: which xmlstarlet
