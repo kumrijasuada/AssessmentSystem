@@ -78,6 +78,7 @@ jobs:
       - name: Get Element
         run: |
          xml_file="${{ env.TRX_FILE_PATH }}"
+         cat "${{ env.TRX_FILE_PATH }}"
          xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "//ns:UnitTestResult[last()]/ns:Output/ns:StdOut" "$xml_file" > result.txt
          echo "SPECIFIC_ELEMENT=result.txt" >> $GITHUB_ENV
 
