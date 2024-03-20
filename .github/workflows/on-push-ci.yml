@@ -53,16 +53,6 @@ jobs:
           NUGET_AUTH_TOKEN: ${{ secrets.NUGET_TOKEN }}
           GITHUB_TOKEN: ${{ github.token }}
 
-    # Add debug statement to check availability of xmlstarlet
-      - name: Check xmlstarlet availability
-        run: |
-         if ! command -v xmlstarlet &> /dev/null; then
-           echo "xmlstarlet is not installed"
-         else
-           echo "xmlstarlet is installed"
-          xmlstarlet --version
-         fi
-
       - name: Test
         run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx" || true  *With this CI continue to run whether tests fail or not
 
@@ -84,7 +74,8 @@ jobs:
          xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
          xpath_expression="//ns:UnitTestResult[last()]/ns:Output/ns:StdOut"
          stdout=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "$xpath_expression" -n "$xml_file")
-         echo "::set-output name=stdout::$stdout"
+         echo "stdout=$stdout" >> $GITHUB_ENV
+
 
       - name: Print values from XML
         id: print-xml-values
