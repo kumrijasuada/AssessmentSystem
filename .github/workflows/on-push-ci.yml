@@ -53,11 +53,21 @@ jobs:
           NUGET_AUTH_TOKEN: ${{ secrets.NUGET_TOKEN }}
           GITHUB_TOKEN: ${{ github.token }}
 
+    # Add debug statement to check availability of xmlstarlet
+      - name: Check xmlstarlet availability
+        run: |
+         if ! command -v xmlstarlet &> /dev/null; then
+           echo "xmlstarlet is not installed"
+         else
+           echo "xmlstarlet is installed"
+          xmlstarlet --version
+         fi
+
       - name: Test
         run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx" || true  *With this CI continue to run whether tests fail or not
 
       - name: Install xmlstarlet
-        run: sudo apt-get update xmlstarlet
+        run: sudo apt-get update && sudo apt-get install -y xmlstarlet
 
       - name: Check xmlstarlet installation path
         run: which xmlstarlet
