@@ -89,8 +89,16 @@ jobs:
             # Print the content of the TRX file (optional)
             cat "$xml_file"
 
-            # Extract the desired element using xmlstarlet
-            output=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "//ns:UnitTestResult[last()]/ns:Output/ns:StdOut" "$xml_file")
+           # Function to handle errors
+            handle_error() {
+                local exit_code=$1
+                local error_message=$2
+                echo "Error: $error_message"
+                exit $exit_code
+            }
+
+            # Attempt to run the xmlstarlet command
+            output=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "//ns:UnitTestResult[last()]/ns:Output/ns:StdOut" "$xml_file") || handle_error $? "Failed to execute xmlstarlet command"
 
             # Check if xmlstarlet command was successful
             if [ $? -ne 0 ]; then
