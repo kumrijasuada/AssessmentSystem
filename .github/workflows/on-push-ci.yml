@@ -78,7 +78,7 @@ jobs:
       - name: Get Element
         run: |
          xml_file="${{ env.TRX_FILE_PATH }}"
-         xmlstarlet sel -t -c "//UnitTestResult[last()]/Output/nStdOut" "$xml_file" > result.txt
+         xmlstarlet sel -t -c "//UnitTestResult[last()]/Output/StdOut" "$xml_file" > result.txt
          echo "SPECIFIC_ELEMENT=result.txt" >> $GITHUB_ENV
 
       - name: Print TRX content
