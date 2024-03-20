@@ -26,6 +26,14 @@ jobs:
       - name: Print pull request number
         run: echo "Last pull request number is ${{ steps.get-pr-number.outputs.pr_number }}"
 
+      - name: Include variables from variables.yml
+        run: on-push-ci.yml
+
+      - name: Print the value of SPECIFIC_ELEMENT
+        id: get-result
+        run: |
+         result= cat "${{ env.SPECIFIC_ELEMENT }}"
+
       - name: Add Comment
         uses: actions/github-script@v5
         with:
@@ -35,7 +43,7 @@ jobs:
               issue_number: ${{ steps.get-pr-number.outputs.pr_number }},
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: "$(cat ${{ env.SPECIFIC_ELEMENT }})"
+              body: ${{ steps.get-result.result }}
             })
 
 
