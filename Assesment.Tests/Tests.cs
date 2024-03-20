@@ -16,7 +16,7 @@ namespace Assesment.Tests
                 Assert.That(e.GetMostFrequent("mamaaa"), Is.EqualTo('a'));
                 Assert.That(e.GetMostFrequent("gaga"), Is.EqualTo('g'));
                 Assert.That(e.GetMostFrequent("agag"), Is.EqualTo('a'));
-                Assert.That(e.GetMostFrequent("1231"), Is.EqualTo('3'));
+                Assert.That(e.GetMostFrequent("12312312333456"), Is.EqualTo('3'));
             });
         }
 
