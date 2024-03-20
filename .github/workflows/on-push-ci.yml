@@ -74,13 +74,13 @@ jobs:
          xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
          xmlstarlet sel -t -c "/" "$xml_file" > trx_content.xml
          echo "TRX_FILE_PATH=trx_content.xml" >> $GITHUB_ENV
-         # xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
-         # xpath_expression="//ns:UnitTestResult[last()]/ns:Output/ns:StdOut"
-         # stdout=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "$xpath_expression" -n "$xml_file")
-         # echo "::set-output name=stdout::$stdout"
+
+      - name: Get Element
+        run: |
+         xml_file="${{ env.TRX_FILE_PATH }}"
+         xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/nStdOut" "$xml_file" > result.txt
+         echo "SPECIFIC_ELEMENT=result.txt" >> $GITHUB_ENV
 
       - name: Print TRX content
         run: |
-         xml_file="${{ env.TRX_FILE_PATH }}"
-         specific_element=$(xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/nStdOut" "$xml_file")
-         echo "SPECIFIC_ELEMENT=$specific_element" >> $GITHUB_ENV
+          cat "${{ env.SPECIFIC_ELEMENT }}"
