@@ -62,11 +62,11 @@ jobs:
       # - name: Check xmlstarlet installation path
       #   run: which xmlstarlet
 
-      - name: List Test Results Directory
-        run: ls -la /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/
+      # - name: List Test Results Directory
+      #   run: ls -la /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/
 
-      - name: Print TRX file content
-        run: cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
+      # - name: Print TRX file content
+      #   run: cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
 
       - name: Read values from XML file
         id: read-xml
@@ -81,6 +81,6 @@ jobs:
          xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "//ns:UnitTestResult[last()]/ns:Output/ns:StdOut" "$xml_file" > result.txt
          echo "SPECIFIC_ELEMENT=result.txt" >> $GITHUB_ENV
 
-      - name: Print TRX content
+      - name: Print XML content
         run: |
           cat "${{ env.SPECIFIC_ELEMENT }}"
