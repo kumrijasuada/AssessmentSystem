@@ -22,10 +22,10 @@ namespace Assesment.Tests
 
             //string data = $"TotalPoints:{totalPoints}Passed:{totalEarnedPoints}Fail:{totalFailedPoints}";
 
-            ////resultBuilder.AppendLine();
-            resultBuilder.AppendLine($"Total Points: {totalPoints}");
-            resultBuilder.AppendLine($"Passed: {totalEarnedPoints}");
-            resultBuilder.AppendLine($"Fail: {totalFailedPoints}");
+            resultBuilder.AppendLine();
+            resultBuilder.AppendLine($"Total Points:{totalPoints}");
+            resultBuilder.AppendLine($"Passed:{totalEarnedPoints}");
+            resultBuilder.AppendLine($"Fail:{totalFailedPoints}");
             resultBuilder.AppendLine();
             Console.WriteLine(resultBuilder.ToString()); 
         }
