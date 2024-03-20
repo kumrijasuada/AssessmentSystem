@@ -73,14 +73,13 @@ jobs:
         run: |
          xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
          stdout=$(xmlstarlet sel -t -c "/" "$xml_file")
-         echo "::set-output name=stdout::$stdout"
+         echo "TRX_CONTENT=$result" >> $GITHUB_ENV
          # xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
          # xpath_expression="//ns:UnitTestResult[last()]/ns:Output/ns:StdOut"
          # stdout=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "$xpath_expression" -n "$xml_file")
          # echo "::set-output name=stdout::$stdout"
 
-      - name: Print values from XML
-        id: print-xml-values
+      - name: Print TRX content
         run: |
-         echo "::set-output name=xml-value::${{ steps.read-xml.outputs.stdout }}"
+          cho "${{ env.TRX_CONTENT }}"
 
