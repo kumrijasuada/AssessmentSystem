@@ -81,5 +81,5 @@ jobs:
 
       - name: Print TRX content
         run: |
-          cho "${{ env.TRX_CONTENT }}"
+          echo "${{ env.TRX_CONTENT }}"
 
