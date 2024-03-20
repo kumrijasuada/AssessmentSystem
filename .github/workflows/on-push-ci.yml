@@ -73,7 +73,7 @@ jobs:
         run: |
          xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
          result=$(xmlstarlet sel -t -c "/" "$xml_file")
-         echo "TRX_CONTENT=$result" >> $GITHUB_ENV
+         echo "TRX_CONTENT=${result//'%'/'%25'}" >> $GITHUB_ENV
          # xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
          # xpath_expression="//ns:UnitTestResult[last()]/ns:Output/ns:StdOut"
          # stdout=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "$xpath_expression" -n "$xml_file")
