@@ -9,8 +9,6 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-env:
-  SPECIFIC_ELEMENT: ""
 
 jobs:
   build:
@@ -57,10 +55,13 @@ jobs:
         run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx" || true  *With this CI continue to run whether tests fail or not
 
       - name: Get Element
+        id: get-result
         run: |
             xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
             grep -o '<StdOut>.*</StdOut>' "$xml_file" | sed 's/<StdOut>\(.*\)<\/StdOut>/\1/' > result.txt
             echo "SPECIFIC_ELEMENT=result.txt" >> $GITHUB_ENV
+        env:
+          test-results: cat "${{ env.SPECIFIC_ELEMENT }}"
 
       - name: Print XML content
         run: |
