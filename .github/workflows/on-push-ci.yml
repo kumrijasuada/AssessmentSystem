@@ -56,29 +56,20 @@ jobs:
       - name: Test
         run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx" || true  *With this CI continue to run whether tests fail or not
 
-      - name: Install xmlstarlet
-        run: sudo apt-get update && sudo apt-get install -y xmlstarlet
+      # - name: Install xmlstarlet
+      #   run: sudo apt-get update && sudo apt-get install -y xmlstarlet
 
-      # - name: Check xmlstarlet installation path
-      #   run: which xmlstarlet
-
-      # - name: List Test Results Directory
-      #   run: ls -la /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/
-
-      # - name: Print TRX file content
-      #   run: cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
-
-      - name: Read values from XML file
-        id: read-xml
-        run: |
-         xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
-         xmlstarlet sel -t -c "/" "$xml_file" > trx_content.xml
-         echo "TRX_FILE_PATH=trx_content.xml" >> $GITHUB_ENV
+      # - name: Read values from XML file
+      #   id: read-xml
+      #   run: |
+      #    xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
+      #    xmlstarlet sel -t -c "/" "$xml_file" > trx_content.xml
+      #    echo "TRX_FILE_PATH=trx_content.xml" >> $GITHUB_ENV
 
       - name: Get Element
         run: |
             # Set the XML file path
-            xml_file="${{ env.TRX_FILE_PATH }}"
+            xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
             grep -o '<StdOut>.*</StdOut>' "$xml_file" | sed 's/<StdOut>\(.*\)<\/StdOut>/\1/' > result.txt
             # Set the environment variable with the path to result.txt
             echo "SPECIFIC_ELEMENT=result.txt" >> $GITHUB_ENV
