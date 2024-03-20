@@ -25,8 +25,8 @@ namespace Assesment.Tests
             ////resultBuilder.AppendLine();
             resultBuilder.AppendLine($"Total Points: {totalPoints}");
             resultBuilder.AppendLine($"Passed: {totalEarnedPoints}");
-            resultBuilder.AppendLine($"Fail:  {totalFailedPoints}");
-            //resultBuilder.AppendLine();
+            resultBuilder.AppendLine($"Fail: {totalFailedPoints}");
+            resultBuilder.AppendLine();
             Console.WriteLine(resultBuilder.ToString()); 
         }
     }
