@@ -65,8 +65,8 @@ jobs:
       - name: List Test Results Directory
         run: ls -la /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/
 
-      # - name: Print TRX file content
-      #   run: cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
+      - name: Print TRX file content
+        run: cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
 
       - name: Read values from XML file
         id: read-xml
