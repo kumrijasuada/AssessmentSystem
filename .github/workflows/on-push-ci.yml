@@ -79,7 +79,7 @@ jobs:
         run: |
             # Set the XML file path
             xml_file="${{ env.TRX_FILE_PATH }}"
-            grep -oP '<StdOut>\K[^<]*' "$xml_file" | tail -n 1 > result.txt
+            grep -o '<StdOut>.*</StdOut>' "$xml_file" | sed 's/<StdOut>\(.*\)<\/StdOut>/\1/' > result.txt
             # Set the environment variable with the path to result.txt
             echo "SPECIFIC_ELEMENT=result.txt" >> $GITHUB_ENV
 
