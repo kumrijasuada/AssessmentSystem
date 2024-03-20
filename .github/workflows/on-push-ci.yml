@@ -56,9 +56,10 @@ jobs:
       - name: Get Element
         run: |
             xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
-            # grep -o '<StdOut>.*</StdOut>' "$xml_file" | sed 's/<StdOut>\(.*\)<\/StdOut>/\1/' > result.txt
-            grep -oPz '<StdOut>.*?</StdOut>' "$xml_file" | sed 's/<StdOut>\(.*\)<\/StdOut>/\1/' > result.txt
-            echo "SPECIFIC_ELEMENT=result.txt" >> $GITHUB_ENV
+            grep -o '<StdOut>.*</StdOut>' "$xml_file" | sed 's/<StdOut>\(.*\)<\/StdOut>/\1/' > result.txt
+            # grep -oPz '<StdOut>.*?</StdOut>' "$xml_file" | sed 's/<StdOut>\(.*\)<\/StdOut>/\1/' > result.txt
+        env:
+            SPECIFIC_ELEMENT: result.txt
 
       - name: Print XML content
         run: |
