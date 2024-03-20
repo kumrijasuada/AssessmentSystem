@@ -18,6 +18,7 @@ namespace Assesment.Tests
                 Assert.That(e.GetMostFrequent("agag"), Is.EqualTo('a'));
                 Assert.That(e.GetMostFrequent("12312312333456"), Is.EqualTo('3'));
             });
+
         }
 
         [Test]
