@@ -68,25 +68,25 @@ jobs:
       - name: Print TRX file content
         run: cat /home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx
 
+      # - name: Read values from XML file
+      #   id: read-xml
+      #   run: |
+      #    xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
+      #    total_points=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "//ns:UnitTestResult[last()]/ns:Output/ns:StdOut" -n "$xml_file" | grep -oE "Total Points: \d+" | awk '{print $3}')
+      #    passed=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "//ns:UnitTestResult[last()]/ns:Output/ns:StdOut" -n "$xml_file" | grep -oE "Passed: \d+" | awk '{print $2}')
+      #    fail=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "//ns:UnitTestResult[last()]/ns:Output/ns:StdOut" -n "$xml_file" | grep -oE "Fail: \d+" | awk '{print $2}')
+      #    echo "Total Points: $total_points"
+      #    echo "Passed: $passed"
+      #    echo "Fail: $fail"
+
+
       - name: Read values from XML file
         id: read-xml
         run: |
          xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
-         total_points=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "//ns:UnitTestResult[last()]/ns:Output/ns:StdOut" -n "$xml_file" | grep -oE "Total Points: \d+" | awk '{print $3}')
-         passed=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "//ns:UnitTestResult[last()]/ns:Output/ns:StdOut" -n "$xml_file" | grep -oE "Passed: \d+" | awk '{print $2}')
-         fail=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "//ns:UnitTestResult[last()]/ns:Output/ns:StdOut" -n "$xml_file" | grep -oE "Fail: \d+" | awk '{print $2}')
-         echo "Total Points: $total_points"
-         echo "Passed: $passed"
-         echo "Fail: $fail"
-
-
-      # - name: Read values from XML file
-      #   id: read-xml
-      #   run: |
-         # xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
-         # xpath_expression="//ns:UnitTestResult[last()]/ns:Output/ns:StdOut"
-         # stdout=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "$xpath_expression" -n "$xml_file")
-         # echo "stdout=$stdout" >> $GITHUB_ENV
+         xpath_expression="//ns:UnitTestResult[last()]/ns:Output/ns:StdOut"
+         stdout=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "$xpath_expression" -n "$xml_file")
+         echo "stdout=$stdout" >> $GITHUB_ENV
 
 
       - name: Print values from XML
