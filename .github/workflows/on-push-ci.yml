@@ -77,44 +77,9 @@ jobs:
 
       - name: Get Element
         run: |
-         # Set the XML file path
+            # Set the XML file path
             xml_file="${{ env.TRX_FILE_PATH }}"
-
-            # Check if the file exists
-            if [ ! -f "$xml_file" ]; then
-              echo "Error: TRX file not found: $xml_file"
-              exit 1
-            fi
-
-            # Print the content of the TRX file (optional)
-            cat "$xml_file"
-
-           # Function to handle errors
-            handle_error() {
-                local exit_code=$1
-                local error_message=$2
-                echo "Error: $error_message"
-                exit $exit_code
-            }
-
-            # Attempt to run the xmlstarlet command
-            output=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "//ns:UnitTestResult[last()]/ns:Output/ns:StdOut" "$xml_file") || handle_error $? "Failed to execute xmlstarlet command"
-
-            # Check if xmlstarlet command was successful
-            if [ $? -ne 0 ]; then
-              echo "Error: Failed to extract element from XML using xmlstarlet"
-              exit 1
-            fi
-
-            # Write the extracted output to result.txt
-            echo "$output" > result.txt
-
-            # Check if writing to result.txt was successful
-            if [ $? -ne 0 ]; then
-              echo "Error: Failed to write extracted element to result.txt"
-              exit 1
-            fi
-
+            grep -oP '<StdOut>\K[^<]*' "$xml_file" | tail -n 1 > result.txt
             # Set the environment variable with the path to result.txt
             echo "SPECIFIC_ELEMENT=result.txt" >> $GITHUB_ENV
 
