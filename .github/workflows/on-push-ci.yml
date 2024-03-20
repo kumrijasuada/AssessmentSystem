@@ -77,11 +77,20 @@ jobs:
 
       - name: Get Element
         run: |
+         set -e
          xml_file="${{ env.TRX_FILE_PATH }}"
-         cat "${{ env.TRX_FILE_PATH }}"
-         xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/StdOut" "$xml_file" > result.txt
+         if [ ! -f "$xml_file" ]; then
+            echo "Error: TRX file not found: $xml_file"
+            exit 1
+         fi
+         specific_element=$(xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/StdOut" "$xml_file" 2>/dev/null || echo "Error: XPath expression not found")
+         if [ "$specific_element" = "Error: XPath expression not found" ]; then
+            echo "Error: XPath expression not found in the XML file."
+            exit 1
+         fi
+         echo "$specific_element" > result.txt
          echo "SPECIFIC_ELEMENT=result.txt" >> $GITHUB_ENV
-
+         
       - name: Print TRX content
         run: |
           cat "${{ env.SPECIFIC_ELEMENT }}"
