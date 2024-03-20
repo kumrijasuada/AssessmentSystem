@@ -27,9 +27,6 @@ jobs:
           dotnet-version: ${{ vars.DOTNET_VERSION }}
           source-url: ${{ vars.NUGET_SOURCE_URL }}
 
-      # - name: Debug Root Directory
-      #   run: ls -la
-
       - name: Dotnet restore solution
         run: dotnet restore AssessGrader.sln
 
@@ -56,22 +53,10 @@ jobs:
       - name: Test
         run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx" || true  *With this CI continue to run whether tests fail or not
 
-      # - name: Install xmlstarlet
-      #   run: sudo apt-get update && sudo apt-get install -y xmlstarlet
-
-      # - name: Read values from XML file
-      #   id: read-xml
-      #   run: |
-      #    xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
-      #    xmlstarlet sel -t -c "/" "$xml_file" > trx_content.xml
-      #    echo "TRX_FILE_PATH=trx_content.xml" >> $GITHUB_ENV
-
       - name: Get Element
         run: |
-            # Set the XML file path
             xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
             grep -o '<StdOut>.*</StdOut>' "$xml_file" | sed 's/<StdOut>\(.*\)<\/StdOut>/\1/' > result.txt
-            # Set the environment variable with the path to result.txt
             echo "SPECIFIC_ELEMENT=result.txt" >> $GITHUB_ENV
 
       - name: Print XML content
