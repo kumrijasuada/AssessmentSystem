@@ -5,6 +5,7 @@ namespace Assesment.Tests
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class |
                  AttributeTargets.Interface | AttributeTargets.Assembly,
                  AllowMultiple = true)]
+
     public class PointsCalculatorAttribute : Attribute, ITestAction
     {
         private int _TotalPoints;
