@@ -72,8 +72,8 @@ jobs:
         id: read-xml
         run: |
          xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
-         result=$(xmlstarlet sel -t -c "/" "$xml_file")
-         echo "$result"
+         $stdout=$(xmlstarlet sel -t -c "/" "$xml_file")
+         echo "::set-output name=stdout::$stdout"
          # xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
          # xpath_expression="//ns:UnitTestResult[last()]/ns:Output/ns:StdOut"
          # stdout=$(xmlstarlet sel -N ns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -v "$xpath_expression" -n "$xml_file")
@@ -82,5 +82,5 @@ jobs:
       - name: Print values from XML
         id: print-xml-values
         run: |
-         echo "::set-output name=xml-value::${{ steps.read-xml.outputs.result }}"
+         echo "::set-output name=xml-value::${{ steps.read-xml.outputs.stdout }}"
 
