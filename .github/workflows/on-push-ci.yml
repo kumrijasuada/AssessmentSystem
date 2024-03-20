@@ -81,8 +81,6 @@ jobs:
 
       - name: Print TRX content
         run: |
-          cat "${{ env.TRX_FILE_PATH }}"
-          # xml_file="${{ env.TRX_FILE_PATH }}"
-          # specific_element=$(xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/nStdOut" "$xml_file")
-          # echo "SPECIFIC_ELEMENT=$specific_element" >> $GITHUB_ENV
-
+         xml_file="${{ env.TRX_FILE_PATH }}"
+         specific_element=$(xmlstarlet sel -t -v "//UnitTestResult[last()]/Output/nStdOut" "$xml_file")
+         echo "SPECIFIC_ELEMENT=$specific_element" >> $GITHUB_ENV
