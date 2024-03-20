@@ -82,5 +82,7 @@ jobs:
          echo "SPECIFIC_ELEMENT=result.txt" >> $GITHUB_ENV
 
       - name: Print XML content
+        id: read-result
         run: |
-          cat "${{ env.SPECIFIC_ELEMENT }}"
+          specific_element_content=$(cat "$ENV{SPECIFIC_ELEMENT}")
+          echo "SPECIFIC_ELEMENT_CONTENT=$specific_element_content" >> $GITHUB_ENV
