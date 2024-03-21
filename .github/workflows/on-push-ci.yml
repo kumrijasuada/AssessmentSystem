@@ -13,6 +13,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    outputs:
+      test_result: ${{ steps.get-result-output.outputs.test_result }}
+
     permissions:
       contents: read
       packages: write
@@ -37,9 +41,11 @@ jobs:
   get-result:
     needs: build
     runs-on: ubuntu-latest
+
     outputs:
       test_result: ${{ steps.get-result-output.outputs.test_result }}
     permissions: write-all
+
     steps:
       - uses: actions/checkout@v3
       - name: Checkout Code
