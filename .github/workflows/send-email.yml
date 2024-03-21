@@ -35,7 +35,7 @@ jobs:
               issue_number: ${{ steps.get-pr-number.outputs.pr_number }},
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: ${{ steps.get-result.outputs.specific_element }}
+              body: ${{ steps.get-result.outputs.test_result }}
             })
 
 
