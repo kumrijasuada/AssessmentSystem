@@ -20,7 +20,7 @@ namespace Assesment.Tests
                 totalFailedPoints += TestResult.FailedPoints;
             }
 
-            string data = $"TotalPoints:**{totalPoints}**, Passed:**{totalEarnedPoints}**, Fail:**{totalFailedPoints}**";
+            string data = $"Total Points: **{totalPoints}**<br>Passed: **{totalEarnedPoints}**<br>Fail: **{totalFailedPoints}**";
              
 
             //resultBuilder.AppendLine();
