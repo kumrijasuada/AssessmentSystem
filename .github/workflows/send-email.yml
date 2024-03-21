@@ -12,7 +12,7 @@ on:
 jobs:
   read-pull-request:
     runs-on: ubuntu-latest
-    needs: get-result
+    needs: CI/CD On Push Workflow
     permissions: write-all
     steps:
       - name: Checkout code
@@ -28,9 +28,9 @@ jobs:
       - name: Print pull request number
         run: echo "Last pull request number is ${{ steps.get-pr-number.outputs.pr_number }}"
       
-      - name: Print Test Results
-        run: |
-          echo "${{ needs.get-result.outputs.test_result }}"
+      # - name: Print Test Results
+      #   run: |
+      #     echo "${{ needs.get-result.outputs.test_result }}"
      
       - name: Add Comment
         uses: actions/github-script@v5
@@ -41,7 +41,7 @@ jobs:
               issue_number: ${{ steps.get-pr-number.outputs.pr_number }},
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Test'
+              body: "${{ needs.CI-CD-On-Push.outputs.test_result }}" 
             })
 
 
