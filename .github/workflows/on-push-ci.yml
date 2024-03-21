@@ -61,4 +61,4 @@ jobs:
 
       - name: Print XML content
         run: |
-          cat "${{ env.SPECIFIC_ELEMENT }}"
+          echo "${{ steps.get-result.outputs.SPECIFIC_ELEMENT }}"
