@@ -60,7 +60,14 @@ jobs:
             xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
             test_result=$(grep -o '<StdOut>.*</StdOut>' "$xml_file" | sed 's/<StdOut>\(.*\)<\/StdOut>/\1/')
             echo "::set-output name=test_result::$test_result"
-   
+            echo "$test_result" > test-result.txt # Save the test result to a text file
+
+      - name: Upload Test Result
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-result
+          path: test-result.txt
+
       - name: Print Test Results
         run: |
           echo "${{ steps.get-result-output.outputs.test_result }}"
