@@ -68,8 +68,9 @@ jobs:
 
   send-notification:
     runs-on: ubuntu-latest
-    steps:
+    permissions: write-all
 
+    steps:
       - name: Get last pull request number
         id: get-pr-number
         run: |
