@@ -28,7 +28,7 @@ jobs:
       
       - name: Print Test Results
         run: |
-          echo "${{ needs.get-result.outputs.test_result }}"
+          echo "${{ needs.get-result.get-result.outputs.test_result }}"
      
       - name: Add Comment
         uses: actions/github-script@v5
