@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions: write-all
     outputs:
-      test-results: ${{ steps.test.outputs.test-results }}
+      test-results: ${{ steps.get-result.outputs.test-results }}
     steps:
       - uses: actions/checkout@v3
       - name: Checkout Code
