@@ -9,6 +9,7 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -38,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions: write-all
     outputs:
-      test-results: ${{ steps.test.outputs.test-results }}
+      test-results: ${{ steps.get-result.outputs.test-results }}
     steps:
       - uses: actions/checkout@v3
       - name: Checkout Code
@@ -54,10 +55,13 @@ jobs:
         run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx" || true  *With this CI continue to run whether tests fail or not
 
       - name: Get Element
+        id: get-result
         run: |
             xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
             grep -o '<StdOut>.*</StdOut>' "$xml_file" | sed 's/<StdOut>\(.*\)<\/StdOut>/\1/' > result.txt
             echo "SPECIFIC_ELEMENT=result.txt" >> $GITHUB_ENV
+        env:
+          test-results: cat "${{ env.SPECIFIC_ELEMENT }}"
 
       - name: Print XML content
         run: |

@@ -6,6 +6,7 @@ namespace Assesment.Tests
                  AttributeTargets.Interface | AttributeTargets.Assembly,
                  AllowMultiple = true)]
 
+
     public class PointsCalculatorAttribute : Attribute, ITestAction
     {
         private int _TotalPoints;
