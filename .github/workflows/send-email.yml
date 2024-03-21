@@ -25,9 +25,6 @@ jobs:
           
       - name: Print pull request number
         run: echo "Last pull request number is ${{ steps.get-pr-number.outputs.pr_number }}"
-
-      - name: Print pull request number
-        run: echo "Last pull request number is ${{ steps.get-result.outputs.test-results }}
         
       - name: Add Comment
         uses: actions/github-script@v5
