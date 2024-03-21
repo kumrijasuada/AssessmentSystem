@@ -67,6 +67,7 @@ jobs:
           echo "${{ steps.get-result-output.outputs.test_result }}"
 
   send-notification:
+    needs: get-result
     runs-on: ubuntu-latest
     permissions: write-all
 
