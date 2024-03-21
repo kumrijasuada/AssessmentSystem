@@ -60,7 +60,3 @@ jobs:
             xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
             test_result=$(grep -o '<StdOut>.*</StdOut>' "$xml_file" | sed 's/<StdOut>\(.*\)<\/StdOut>/\1/')
             echo "::set-output name=test_result::$test_result"
-
-      - name: Print Test Results
-        run: |
-          echo "${{ steps.get-result.outputs.test_result }}"
