@@ -34,7 +34,7 @@ jobs:
       - name: Dotnet build solution
         run: dotnet build AssessGrader.sln
 
-  test:
+  get-result:
     needs: build
     runs-on: ubuntu-latest
     outputs:
