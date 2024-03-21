@@ -14,6 +14,20 @@ jobs:
       - name: Dummy Step
         run: echo "This is a dummy job"
 
+  get-result:  # Add the get-result job here
+    runs-on: ubuntu-latest
+    outputs:
+      test_result: ${{ steps.get-result-output.outputs.test_result }}
+    permissions: write-all
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Run Test Scenarios
+        run: echo "Running tests..."
+      - name: Get Results
+        id: get-result-output
+        run: echo "::set-output name=test_result::Test result from get-result job"
+
   read-pull-request:
     runs-on: ubuntu-latest
     permissions: write-all
