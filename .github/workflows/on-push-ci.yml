@@ -58,11 +58,9 @@ jobs:
         id: get-result
         run: |
             xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
-            grep -o '<StdOut>.*</StdOut>' "$xml_file" | sed 's/<StdOut>\(.*\)<\/StdOut>/\1/' > result.txt
-            echo "SPECIFIC_ELEMENT=result.txt" >> $GITHUB_ENV
-        env:
-          test-results: cat "${{ env.SPECIFIC_ELEMENT }}"
+            specific_element=$(grep -o '<StdOut>.*</StdOut>' "$xml_file" | sed 's/<StdOut>\(.*\)<\/StdOut>/\1/')
+            echo "SPECIFIC_ELEMENT=$specific_element" >> $GITHUB_ENV
 
       - name: Print XML content
         run: |
-          echo "${{ steps.get-result.outputs.SPECIFIC_ELEMENT }}"
+          echo "${{ steps.get-result.outputs.specific_element }}"
