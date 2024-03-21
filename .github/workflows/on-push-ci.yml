@@ -88,7 +88,12 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const testResult = '${{ needs.get-result.outputs.test_result }}';
-            const formattedResult = testResult.replace(/&lt;br&gt;/g, '<br>');
+            let formattedResult;
+            if (testResult.trim() === '') {
+            formattedResult = "Sorry you have failed. <br> Total earned points : **0**";
+            } else {
+            formattedResult = testResult.replace(/&lt;br&gt;/g, '<br>');
+            }
             github.rest.issues.createComment({
               issue_number: ${{ steps.get-pr-number.outputs.pr_number }},
               owner: context.repo.owner,
