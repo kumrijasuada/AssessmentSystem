@@ -7,32 +7,12 @@ on:
     types: 
       - completed
 
+  # workflow_dispatch: 
+
 jobs:
-  dummy-job:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Dummy Step
-        run: echo "This is a dummy job"
-
-  get-result:  # Add the get-result job here
-    runs-on: ubuntu-latest
-    outputs:
-      test_result: ${{ steps.get-result-output.outputs.test_result }}
-    permissions: write-all
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-      - name: Run Test Scenarios
-        run: echo "Running tests..."
-      - name: Get Results
-        id: get-result-output
-        run: echo "::set-output name=test_result::Test result from get-result job"
-
   read-pull-request:
     runs-on: ubuntu-latest
     permissions: write-all
-    needs: [dummy-job, get-result]  # Specify the dependency on the dummy job and get-result job
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -46,7 +26,17 @@ jobs:
           
       - name: Print pull request number
         run: echo "Last pull request number is ${{ steps.get-pr-number.outputs.pr_number }}"
-      
+
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: test-result
+          path: ${{ github.workspace }}
+
+      - name: Read Test Result
+        run: |
+          cat test-result.txt # or any other operation you want to perform with the test result
+
       - name: Print Test Results
         run: |
           echo "${{ needs.get-result.outputs.test_result }}"
@@ -62,3 +52,5 @@ jobs:
               repo: context.repo.repo,
               body: 'Test'
             })
+
+
