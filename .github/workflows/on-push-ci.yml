@@ -71,6 +71,9 @@ jobs:
     permissions: write-all
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Get last pull request number
         id: get-pr-number
         run: |
