@@ -13,7 +13,7 @@ namespace Assesment.Tests
             decimal totalEarnedPoints = 0;
             decimal totalFailedPoints = 0;
 
-            foreacht (var TestResult in ExamResults.ExamResultList)
+            foreach (var TestResult in ExamResults.ExamResultList)
             {
                 totalPoints += TestResult.TotalPoints;
                 totalEarnedPoints += TestResult.EarnedPoints;
