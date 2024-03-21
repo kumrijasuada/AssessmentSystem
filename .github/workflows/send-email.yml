@@ -12,6 +12,7 @@ on:
 jobs:
   read-pull-request:
     runs-on: ubuntu-latest
+    needs: get-result
     permissions: write-all
     steps:
       - name: Checkout code
@@ -26,17 +27,7 @@ jobs:
           
       - name: Print pull request number
         run: echo "Last pull request number is ${{ steps.get-pr-number.outputs.pr_number }}"
-
-      - name: Download artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: test-result
-          path: ${{ github.workspace }}
-
-      - name: Read Test Result
-        run: |
-          cat test-result.txt # or any other operation you want to perform with the test result
-
+      
       - name: Print Test Results
         run: |
           echo "${{ needs.get-result.outputs.test_result }}"
