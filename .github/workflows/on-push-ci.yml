@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions: write-all
     outputs:
-      test-results: ${{ steps.get-result.outputs.test-results }}
+      test-results: ${{ steps.get-result.outputs.specific_element }}
     steps:
       - uses: actions/checkout@v3
       - name: Checkout Code
@@ -59,7 +59,7 @@ jobs:
         run: |
             xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
             specific_element=$(grep -o '<StdOut>.*</StdOut>' "$xml_file" | sed 's/<StdOut>\(.*\)<\/StdOut>/\1/')
-            echo "SPECIFIC_ELEMENT=$specific_element" >> $GITHUB_ENV
+            echo "::set-output name=specific_element::$specific_element"
 
       - name: Print XML content
         run: |
