@@ -37,6 +37,8 @@ jobs:
   test:
     needs: build
     runs-on: ubuntu-latest
+    outputs:
+      test_result: ${{ steps.get-result.outputs.test_result }}
     permissions: write-all
     steps:
       - uses: actions/checkout@v3
