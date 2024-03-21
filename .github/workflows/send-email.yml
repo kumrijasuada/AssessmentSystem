@@ -8,10 +8,16 @@ on:
       - completed
 
 jobs:
+  dummy-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dummy Step
+        run: echo "This is a dummy job"
+
   read-pull-request:
     runs-on: ubuntu-latest
     permissions: write-all
-    needs: get-result  # Specify the dependency on the job that produces the output
+    needs: [dummy-job, get-result]  # Specify the dependency on the dummy job and get-result job
     
     steps:
       - name: Checkout code
