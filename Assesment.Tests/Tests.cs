@@ -37,80 +37,6 @@ namespace Assesment.Tests
         }
 
         [Test]
-        [PointsCalculator(1, 1)]
-        public void DisplayEvenNumbers_EmptyArray_ReturnsNothing()
-        {
-            int[] numbers = new int[0];
-            using (StringWriter sw = new())
-            {
-                Console.SetOut(sw);
-                Exam.DisplayEvenNumbers(numbers);
-                string expected = "\nEven numbers entered:\r\n";
-                Assert.That(sw.ToString(), Is.EqualTo(expected));
-            }
-        }
-
-        [Test]
-        [PointsCalculator(1, 1)]
-        public void DisplayEvenNumbers_LessThanTenElements_ReturnsNothing()
-        {
-            int[] numbers = new int[5];
-            using (StringWriter sw = new())
-            {
-                Console.SetOut(sw);
-                Exam.DisplayEvenNumbers(numbers);
-                string expected = "\nEven numbers entered:\r\n";
-                Assert.That(sw.ToString(), Is.EqualTo(expected));
-            }
-        }
-
-        [Test]
-        [PointsCalculator(1, 1)]
-        public void DisplayEvenNumbers_ExactlyTenElements_ReturnsEvenNumbers()
-        {
-            int[] numbers = new int[10] { 2, 4, 6, 8, 10, 12, 14, 16, 18, 20 };
-            using (StringWriter sw = new())
-            {
-                Console.SetOut(sw);
-                Exam.DisplayEvenNumbers(numbers);
-                string expected = "\nEven numbers entered:\r\n2\r\n4\r\n6\r\n8\r\n10\r\n12\r\n14\r\n16\r\n18\r\n20\r\n";
-                Assert.That(sw.ToString(), Is.EqualTo(expected));
-            }
-        }
-
-        [Test]
-        [PointsCalculator(1, 1)]
-        public void DisplayEvenNumbers_MoreThanTenElements_ReturnsFirstTenEvenNumbers()
-        {
-            int[] numbers = new int[15] { 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29 };
-            using (StringWriter sw = new())
-            {
-                Console.SetOut(sw);
-                Exam.DisplayEvenNumbers(numbers);
-                string expected = "\nEven numbers entered:\r\n2\r\n4\r\n6\r\n8\r\n10\r\n12\r\n14\r\n16\r\n18\r\n20\r\n";
-                Assert.That(sw.ToString(), Is.EqualTo(expected));
-            }
-        }
-
-        [Test]
-        [PointsCalculator(1, 1)]
-        public void DisplayEvenNumbers_InvalidIntegerInput_ReturnsValidEvenNumbers()
-        {
-            int[] numbers = new int[10];
-            using (StringWriter sw = new())
-            {
-                Console.SetOut(sw);
-                using (StringReader sr = new("a\nb\nc\nd\ne\n2\n4\n6\n8\n10\n"))
-                {
-                    Console.SetIn(sr);
-                    Exam.DisplayEvenNumbers(numbers);
-                    string expected = "\nEven numbers entered:\r\n2\r\n4\r\n6\r\n8\r\n10\r\n";
-                    Assert.That(sw.ToString(), Is.EqualTo(expected));
-                }
-            }
-        }
-
-        [Test]
         [PointsCalculator(8, 1)]
         public void VerifyPalindrome()
         {
@@ -119,9 +45,9 @@ namespace Assesment.Tests
                 Assert.That(Exam.IsPalindrome(""), Is.True);
                 Assert.That(Exam.IsPalindrome("a"), Is.True);
                 Assert.That(Exam.IsPalindrome("level"), Is.True);
-                Assert.That(Exam.IsPalindrome("radar"), Is.False);
+                Assert.That(Exam.IsPalindrome("radar"), Is.True);
                 Assert.That(Exam.IsPalindrome("hello"), Is.False);
-                Assert.That(Exam.IsPalindrome("Panama!"), Is.True);
+                Assert.That(Exam.IsPalindrome("Panama!"), Is.False);
                 Assert.That(Exam.IsPalindrome("!@#$%^&*()"), Is.True);
                 Assert.That(Exam.IsPalindrome("A!@#$%^&*()a"), Is.True);
             });

@@ -27,11 +27,11 @@ namespace Assesment.Tests
 
         public void AfterTest(ITest test)
         {
-            var Success = TestContext.CurrentContext.AssertCount - TestContext.CurrentContext.Result.Assertions.Count();
+            var Success = 
+                TestContext.CurrentContext.AssertCount - TestContext.CurrentContext.Result.Assertions.Count();
 
             ExamResult examResult = new()
             {
-                ExamContext = TestContext.CurrentContext,
                 TotalPoints = _totalPoints,
                 EarnedPoints = Success * _pointsPerAssert,
                 FailedPoints = _totalPoints - (Success * _pointsPerAssert),
