@@ -94,11 +94,19 @@
         // Develop a C# program to generate and display all prime numbers less than a specified number.
         public static int[] GeneratePrimes(int n)
         {
+            if (n <= 2)
+            {
+                if (n == 2)
+                    return new int[] { 2 };
+                else
+                    return new int[] { };
+            }
+
             bool[] prime = new bool[n];
             for (int i = 0; i < n; i++)
                 prime[i] = true;
 
-            for (int p = 2; p * p < n; p++)
+            for (int p = 2; p * p <= n; p++) 
             {
                 if (prime[p] == true)
                 {
