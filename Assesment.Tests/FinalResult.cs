@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using Assesment.Tests.Models;
 
 namespace Assesment.Tests
 {
@@ -8,7 +8,6 @@ namespace Assesment.Tests
         [Test]
         public void Test()
         {
-            StringBuilder resultBuilder = new();
             decimal totalPoints = 0;
             decimal totalEarnedPoints = 0;
             decimal totalFailedPoints = 0;
@@ -21,14 +20,8 @@ namespace Assesment.Tests
             }
 
             string data = $"Total Points: **{totalPoints}**<br>Passed: **{totalEarnedPoints}**<br>Fail: **{totalFailedPoints}**";
-             
 
-            //resultBuilder.AppendLine();
-            //resultBuilder.AppendLine($"Total Points : **{totalPoints}**");
-            //resultBuilder.AppendLine($"Passed : **{totalEarnedPoints}**");
-            //resultBuilder.AppendLine($"Fail : **{totalFailedPoints}**");
-
-            Console.Write(data); 
+            Console.Write(data);
         }
     }
 }

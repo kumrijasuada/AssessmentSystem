@@ -1,4 +1,5 @@
-﻿using NUnit.Framework.Internal;
+﻿using Assesment.Tests.Models;
+using NUnit.Framework.Internal;
 
 namespace Assesment.Tests
 {

@@ -1,4 +1,5 @@
-﻿using NUnit.Framework.Interfaces;
+﻿using Assesment.Tests.Models;
+using NUnit.Framework.Interfaces;
 
 namespace Assesment.Tests
 {
@@ -6,13 +7,18 @@ namespace Assesment.Tests
                  AttributeTargets.Interface | AttributeTargets.Assembly,
                  AllowMultiple = true)]
 
-
     public class PointsCalculatorAttribute : Attribute, ITestAction
     {
-        private int _TotalPoints;
-        private int _PointsPerAssert;
-        public PointsCalculatorAttribute(int totalPoints,int pointsPerAssert) 
-        { _TotalPoints = totalPoints; _PointsPerAssert = pointsPerAssert; }
+        private int _totalPoints;
+        private int _pointsPerAssert;
+
+        public PointsCalculatorAttribute(
+            int totalPoints,
+            int pointsPerAssert)
+        {
+            _totalPoints = totalPoints;
+            _pointsPerAssert = pointsPerAssert;
+        }
 
         public void BeforeTest(ITest test)
         {
@@ -23,13 +29,13 @@ namespace Assesment.Tests
         {
             var Success = TestContext.CurrentContext.AssertCount - TestContext.CurrentContext.Result.Assertions.Count();
 
-            ExamResult examResult = new ExamResult()
+            ExamResult examResult = new()
             {
                 ExamContext = TestContext.CurrentContext,
-                TotalPoints = _TotalPoints,
-                EarnedPoints = Success * _PointsPerAssert,
-                FailedPoints = _TotalPoints - (Success * _PointsPerAssert),
-                PointsPerAssert = _PointsPerAssert
+                TotalPoints = _totalPoints,
+                EarnedPoints = Success * _pointsPerAssert,
+                FailedPoints = _totalPoints - (Success * _pointsPerAssert),
+                PointsPerAssert = _pointsPerAssert
             };
 
             ExamResults.ExamResultList.Add(examResult);
@@ -39,15 +45,5 @@ namespace Assesment.Tests
         {
             get { return ActionTargets.Test | ActionTargets.Suite; }
         }
-
-        //private void WriteToConsole(string eventMessage, ITest details)
-        //{
-        //    Console.WriteLine("{0} {1}: {2}, from {3}.{4}.",
-        //        eventMessage,
-        //        details.IsSuite ? "Suite" : "Case",
-        //        _Message,
-        //       /* details.FixtureType != null ? details.FixtureType.Name :*/ "{no fixture}",
-        //        details.Method != null ? details.Method.Name : "{no method}");
-        //}
     }
 }
