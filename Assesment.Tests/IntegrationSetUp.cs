@@ -8,7 +8,6 @@ namespace Assesment.Tests
     {
         public IntegrationSetUpFixture()
         {
-            // runs before all tests
             ExamResults.ExamResultList = new List<ExamResult>();
         }
 
