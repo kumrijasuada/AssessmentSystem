@@ -4,7 +4,9 @@ on:
   push:
     branches:
       - 'exam/*'
-
+  pull_request:
+    branches:
+      - 'exam/*'
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -22,32 +24,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Check if merge commit from PR
-        id: check_merge
+      - name: Determine branch names and check conditions
         run: |
-          echo "Commit message: ${{ github.event.head_commit.message }}"
-          if [[ "${{ github.event.head_commit.message }}" =~ Merge\ pull\ request\ #[0-9]+\ from\ (.+) ]]; then
-            full_branch="${BASH_REMATCH[1]}"
-            specific_part=${full_branch##*/}
-            echo "::set-output name=source_branch::${specific_part}"
-          fi
-
-      - name: Display source branch of the PR and destination branch
-        if: steps.check_merge.outputs.source_branch
-        run: |
-          echo "This push is a merge from branch '${{ steps.check_merge.outputs.source_branch }}'"
-          echo "Destination branch is '${GITHUB_REF#refs/heads/}'"
-
-      - name: Check if destination branch contains specific part of source branch name
-        if: steps.check_merge.outputs.source_branch
-        run: |
-          DEST_BRANCH="${GITHUB_REF#refs/heads/}"
-          SOURCE_BRANCH="${{ steps.check_merge.outputs.source_branch }}"
-          if [[ "$DEST_BRANCH" == *"$SOURCE_BRANCH"* ]]; then
-            echo "Destination branch '$DEST_BRANCH' contains the specific part of the source branch name '$SOURCE_BRANCH'."
-          else
-            echo "Destination branch '$DEST_BRANCH' does not contain the specific part of the source branch name '$SOURCE_BRANCH'."
-            exit 1
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            SOURCE_BRANCH="${{ github.event.pull_request.head.ref }}"
+            DEST_BRANCH="${{ github.event.pull_request.base.ref }}"
+            echo "PR from $SOURCE_BRANCH to $DEST_BRANCH"
+            # Extract the specific part of the source branch name after the last slash
+            SPECIFIC_SOURCE_PART=${SOURCE_BRANCH##*/}
+            if [[ "$DEST_BRANCH" == *"$SPECIFIC_SOURCE_PART"* ]]; then
+              echo "Destination branch '$DEST_BRANCH' contains the specific part of the source branch name '$SPECIFIC_SOURCE_PART'."
+            else
+              echo "Destination branch '$DEST_BRANCH' does not contain the specific part of the source branch name '$SPECIFIC_SOURCE_PART'."
+              exit 1
+            fi
+          elif [ "${{ github.event_name }}" = "push" ]; then
+            BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+            echo "Push to $BRANCH_NAME"
+            # Perform push-specific checks or operations here
           fi
       - uses: actions/checkout@v3
       - name: Checkout Code
