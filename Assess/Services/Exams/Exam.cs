@@ -84,6 +84,10 @@
             return true;
         }
 
+
+
+
+
         // Develop a C# program to generate and display all prime numbers less than a specified number.
         public static int[] GeneratePrimes(int n)
         {
