@@ -23,7 +23,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
       - name: Determine branch names and check conditions
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
@@ -45,20 +44,24 @@ jobs:
           fi
       - uses: actions/checkout@v3
       - name: Checkout Code
+        if: github.event_name == 'push'
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ vars.DOTNET_VERSION }}
           source-url: ${{ vars.NUGET_SOURCE_URL }}
 
       - name: Dotnet restore solution
+        if: github.event_name == 'push'
         run: dotnet restore AssessGrader.sln
 
       - name: Dotnet build solution
+        if: github.event_name == 'push'
         run: dotnet build AssessGrader.sln
 
   get-result:
     needs: build
     runs-on: ubuntu-latest
+    if: github.event_name == 'push'
     outputs:
       test_result: ${{ steps.get-result-output.outputs.test_result }}
     permissions: write-all
@@ -91,7 +94,7 @@ jobs:
   send-notification:
     needs: get-result
     runs-on: ubuntu-latest
-    if: always()
+    if: github.event_name == 'push'
     permissions: write-all
 
     steps:
