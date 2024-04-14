@@ -1,3 +1,4 @@
+using Assesment.Tests.Configurations;
 using Assess.Services.Exams;
 using NUnit.Framework.Internal;
 
