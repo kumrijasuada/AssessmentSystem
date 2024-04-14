@@ -25,6 +25,7 @@ namespace Assesment.Tests.Configurations
             //WriteToConsole("Before", test);
         }
 
+
         public void AfterTest(ITest test)
         {
             var Success =
