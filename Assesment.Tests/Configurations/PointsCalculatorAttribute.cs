@@ -22,7 +22,8 @@ namespace Assesment.Tests.Configurations
 
         public void BeforeTest(ITest test)
         {
-            //WriteToConsole("Before", test);
+            //WriteToConsole("Before", test); 
+
         }
 
         public void AfterTest(ITest test)
