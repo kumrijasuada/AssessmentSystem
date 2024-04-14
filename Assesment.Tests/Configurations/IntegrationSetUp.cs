@@ -18,8 +18,6 @@ namespace Assesment.Tests.Configurations
         }
 
 
-
-
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
