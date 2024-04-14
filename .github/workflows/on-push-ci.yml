@@ -23,13 +23,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Determine branch names and check conditions
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             SOURCE_BRANCH="${{ github.event.pull_request.head.ref }}"
             DEST_BRANCH="${{ github.event.pull_request.base.ref }}"
             echo "PR from $SOURCE_BRANCH to $DEST_BRANCH"
-            # Extract the specific part of the source branch name after the last slash
             SPECIFIC_SOURCE_PART=${SOURCE_BRANCH##*/}
             if [[ "$DEST_BRANCH" == *"$SPECIFIC_SOURCE_PART"* ]]; then
               echo "Destination branch '$DEST_BRANCH' contains the specific part of the source branch name '$SPECIFIC_SOURCE_PART'."
@@ -40,8 +40,8 @@ jobs:
           elif [ "${{ github.event_name }}" = "push" ]; then
             BRANCH_NAME="${GITHUB_REF#refs/heads/}"
             echo "Push to $BRANCH_NAME"
-            # Perform push-specific checks or operations here
           fi
+
       - uses: actions/checkout@v3
       - name: Checkout Code
         if: github.event_name == 'push'
