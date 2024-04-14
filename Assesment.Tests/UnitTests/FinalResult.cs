@@ -6,6 +6,7 @@ namespace Assesment.Tests.UnitTests
     public class FinalResult
     {
         [Test]
+
         public void Test()
         {
             decimal totalPoints = 0;
