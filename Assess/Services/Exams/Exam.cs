@@ -79,7 +79,6 @@
                 left++;
                 right--;
             }
-
             return true;
         }
 
