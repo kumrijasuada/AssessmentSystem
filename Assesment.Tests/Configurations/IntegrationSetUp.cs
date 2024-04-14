@@ -1,7 +1,7 @@
 ﻿using Assesment.Tests.Models;
 using NUnit.Framework.Internal;
 
-namespace Assesment.Tests
+namespace Assesment.Tests.Configurations
 {
     [SetUpFixture]
     public class IntegrationSetUpFixture : IDisposable

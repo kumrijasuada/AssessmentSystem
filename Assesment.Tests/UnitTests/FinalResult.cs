@@ -1,6 +1,6 @@
 ﻿using Assesment.Tests.Models;
 
-namespace Assesment.Tests
+namespace Assesment.Tests.UnitTests
 {
     [Order(9999)]
     public class FinalResult

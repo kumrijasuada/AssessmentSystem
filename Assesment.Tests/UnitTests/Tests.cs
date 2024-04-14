@@ -1,7 +1,7 @@
-using Assess.Services;
+using Assess.Services.Exams;
 using NUnit.Framework.Internal;
 
-namespace Assesment.Tests
+namespace Assesment.Tests.UnitTests
 {
     [Order(0)]
     public class Tests

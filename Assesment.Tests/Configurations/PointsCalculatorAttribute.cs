@@ -1,7 +1,7 @@
 ﻿using Assesment.Tests.Models;
 using NUnit.Framework.Interfaces;
 
-namespace Assesment.Tests
+namespace Assesment.Tests.Configurations
 {
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class |
                  AttributeTargets.Interface | AttributeTargets.Assembly,
@@ -27,14 +27,14 @@ namespace Assesment.Tests
 
         public void AfterTest(ITest test)
         {
-            var Success = 
+            var Success =
                 TestContext.CurrentContext.AssertCount - TestContext.CurrentContext.Result.Assertions.Count();
 
             ExamResult examResult = new()
             {
                 TotalPoints = _totalPoints,
                 EarnedPoints = Success * _pointsPerAssert,
-                FailedPoints = _totalPoints - (Success * _pointsPerAssert),
+                FailedPoints = _totalPoints - Success * _pointsPerAssert,
                 PointsPerAssert = _pointsPerAssert
             };
 

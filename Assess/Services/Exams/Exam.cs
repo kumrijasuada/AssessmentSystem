@@ -1,15 +1,7 @@
-﻿namespace Assess.Services
+﻿namespace Assess.Services.Exams
 {
     public class Exam
     {
-        public char GetMostFrequent(string input)
-        {
-            var charMap = input.Distinct()
-                .ToDictionary(c => c, c => input.Count(s => s == c));
-
-            return charMap.OrderByDescending(v => v.Value).First().Key;
-        }
-
         // Write a C# program to find the factorial of a given number using a recursive function.
         public static int Factorial(int n)
         {
@@ -61,7 +53,7 @@
         // Write a C# program that checks whether a given string is a palindrome or not
         // (a palindrome is a word, phrase, number, or other sequence of characters that
         // reads the same forward and backward).
-        // Example => Ada:
+        // Example => Ada
         public static bool IsPalindrome(string str)
         {
             str = str.ToLower();
@@ -106,7 +98,7 @@
             for (int i = 0; i < n; i++)
                 prime[i] = true;
 
-            for (int p = 2; p * p <= n; p++) 
+            for (int p = 2; p * p <= n; p++)
             {
                 if (prime[p] == true)
                 {
@@ -139,7 +131,7 @@
         {
             if (unitFrom.Equals("Celsius") && unitTo.Equals("Fahrenheit"))
             {
-                return (temperature * 9 / 5) + 32;
+                return temperature * 9 / 5 + 32;
             }
             else if (unitFrom.Equals("Fahrenheit") && unitTo.Equals("Celsius"))
             {
@@ -149,6 +141,15 @@
             {
                 throw new ArgumentException("Unsupported temperature conversion.");
             }
+        }
+
+
+        public char GetMostFrequent(string input)
+        {
+            var charMap = input.Distinct()
+                .ToDictionary(c => c, c => input.Count(s => s == c));
+
+            return charMap.OrderByDescending(v => v.Value).First().Key;
         }
     }
 }
