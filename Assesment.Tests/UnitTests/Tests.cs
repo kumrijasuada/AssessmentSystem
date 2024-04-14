@@ -52,6 +52,7 @@ namespace Assesment.Tests.UnitTests
                 Assert.That(Exam.IsPalindrome("!@#$%^&*()"), Is.True);
                 Assert.That(Exam.IsPalindrome("A!@#$%^&*()a"), Is.True);
             });
+
         }
 
         [Test]
