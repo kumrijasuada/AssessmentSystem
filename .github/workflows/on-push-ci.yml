@@ -10,9 +10,6 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-
-
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -45,9 +42,9 @@ jobs:
             fi
           elif [ "${{ github.event_name }}" = "push" ]; then
             BRANCH_NAME="${GITHUB_REF#refs/heads/}"
-            SPECIFIC_SOURCE_PART=${SOURCE_BRANCH##*/}
+            SPECIFIC_SOURCE_PART=${BRANCH_NAME##*/}
             echo "::set-output name=studentname::$SPECIFIC_SOURCE_PART"
-            echo "Student Name SPECIFIC_SOURCE_PART"
+            echo "Student Name $SPECIFIC_SOURCE_PART"
             echo "Push to $BRANCH_NAME"
           fi
 
