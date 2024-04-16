@@ -95,6 +95,7 @@ jobs:
   #         echo "${{ steps.get-result-output.outputs.test_result }}"
 
   get-results:
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: read
