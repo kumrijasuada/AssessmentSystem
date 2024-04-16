@@ -147,6 +147,7 @@
 
         public char GetMostFrequent(string input)
         {
+
             var charMap = input.Distinct()
                 .ToDictionary(c => c, c => input.Count(s => s == c));
 
