@@ -17,7 +17,7 @@
                 result *= i;
             }
 
-            return result;
+            return 10;
         }
 
         // Write a program in C# that asks the user for 10 integers to store them in an array of integers
@@ -81,7 +81,7 @@
                 right--;
             }
 
-            return true;
+            return false;
         }
 
         // Develop a C# program to generate and display all prime numbers less than a specified number.
