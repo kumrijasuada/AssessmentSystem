@@ -128,10 +128,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Python
+      - name: Setup Python Environment
         uses: actions/setup-python@v2
         with:
           python-version: '3.8'
+
+      - name: Install Dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install numpy pandas
+
+      - name: Run Python Script
+        run: |
+          python3 -c "import pandas as pd; df = pd.DataFrame([1, 2, 3]); print(df)"
 
       - name: Install Dependencies
         run: |
