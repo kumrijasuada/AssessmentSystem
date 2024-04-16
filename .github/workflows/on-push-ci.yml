@@ -160,6 +160,8 @@ jobs:
           git add test-results.xlsx
           git commit -m "Update test results Excel file"
           git push origin develop
+        env:
+           GITHUB_TOKEN: ${{ github.token }}
 
 
   send-notification:
