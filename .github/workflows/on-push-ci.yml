@@ -132,36 +132,26 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x'
+          python-version: '3.8'
 
       - name: Install Dependencies
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install gspread google-auth
 
       - name: Update Google Sheet
         env:
           CREDENTIALS_JSON: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}
-          TEST_RESULT: 'Sample result'  # This should be set according to your actual test output
+          TEST_RESULT: ${{ steps.get-result-output.outputs.test_result }}
           SHEET_URL: 'https://docs.google.com/spreadsheets/d/1zjlEgnJLeNjdJmlS7j-1u-jchSdktE0SDvnOFRz7P0o/edit'
         run: |
-          import gspread
-          from google.oauth2.service_account import Credentials
-          import json
-
-          # Load credentials
-          creds_json = json.loads('${{ env.CREDENTIALS_JSON }}')
-          credentials = Credentials.from_service_account_info(creds_json)
-
-          # Access the spreadsheet
-          gc = gspread.authorize(credentials)
-          sh = gc.open_by_url('${{ env.SHEET_URL }}')
-
-          # Select the first worksheet
-          worksheet = sh.get_worksheet(0)
-
-          # Update the sheet
-          worksheet.append_row([${{ env.TEST_RESULT }}])
+          python -c "import gspread; from google.oauth2.service_account import Credentials; import json; \
+          creds_json = json.loads('${{ env.CREDENTIALS_JSON }}'); \
+          credentials = Credentials.from_service_account_info(creds_json); \
+          gc = gspread.authorize(credentials); \
+          sh = gc.open_by_url('${{ env.SHEET_URL }}'); \
+          worksheet = sh.get_worksheet(0); \
+          worksheet.append_row([${{ env.TEST_RESULT }}])"
 
 
   send-notification:
