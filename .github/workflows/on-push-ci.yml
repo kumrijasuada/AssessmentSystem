@@ -140,11 +140,11 @@ jobs:
 
       - name: Update Google Sheet
         env:
-          CREDENTIALS_JSON: ${{ secrets.CREDENTIALS_JSON }}
+          GOOGLE_SHEETS_CREDENTIALS: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}
           SHEET_URL: 'https://docs.google.com/spreadsheets/d/1zjlEgnJLeNjdJmlS7j-1u-jchSdktE0SDvnOFRz7P0o/edit'
           TEST_RESULT: ${{ steps.get-result-output.outputs.test_result }}
         run: |
-            creds_json = json.loads(base64.b64decode('${{ env.CREDENTIALS_JSON }}').decode('utf-8')); \
+            creds_json = json.loads(base64.b64decode('${{ env.GOOGLE_SHEETS_CREDENTIALS }}').decode('utf-8')); \
             credentials = Credentials.from_service_account_info(creds_json); \
             gc = gspread.authorize(credentials); \
             sh = gc.open_by_url('${{ env.SHEET_URL }}'); \
