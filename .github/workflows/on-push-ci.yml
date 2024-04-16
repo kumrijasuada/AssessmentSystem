@@ -158,6 +158,7 @@ jobs:
           git config --global user.email 'kumrijasuada@gmail.com'
           git fetch origin
           git checkout -b develop origin/develop || git switch -c develop origin/develop
+          git add test-results.xlsx
           git commit -m "Update test results Excel file" 
           git push
         env:
