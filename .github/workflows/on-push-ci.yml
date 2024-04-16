@@ -156,6 +156,7 @@ jobs:
         run: |
           git config --global user.name 'Suada Kumrija'
           git config --global user.email 'action@github.com'
+          git checkout -b develop
           git add test-results.xlsx
           git commit -m "Update test results Excel file"
           git push origin develop
