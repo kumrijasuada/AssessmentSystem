@@ -47,6 +47,7 @@ jobs:
             BRANCH_NAME="${GITHUB_REF#refs/heads/}"
             SPECIFIC_SOURCE_PART=${SOURCE_BRANCH##*/}
             echo "::set-output name=studentname::$SPECIFIC_SOURCE_PART"
+            echo "Student Name SPECIFIC_SOURCE_PART"
             echo "Push to $BRANCH_NAME"
           fi
 
