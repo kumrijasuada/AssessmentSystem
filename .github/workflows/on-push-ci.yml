@@ -146,7 +146,8 @@ jobs:
         run: |
             python3 -c "import json, base64, gspread; from google.oauth2.service_account import Credentials; \
             creds_json = json.loads(base64.b64decode('${{ env.GOOGLE_SHEETS_CREDENTIALS }}').decode('utf-8')); \
-            credentials = Credentials.from_service_account_info(creds_json); \
+            scopes = ['https://www.googleapis.com/auth/spreadsheets']; \
+            credentials = Credentials.from_service_account_info(creds_json, scopes=scopes); \
             gc = gspread.authorize(credentials); \
             sh = gc.open_by_url('${{ env.SHEET_URL }}'); \
             worksheet = sh.get_worksheet(0); \
