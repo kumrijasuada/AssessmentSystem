@@ -14,7 +14,7 @@ namespace Assesment.Tests.UnitTests
             Exam e = new();
             Assert.Multiple(() =>
             {
-                Assert.That(e.GetMostFrequent("mamaaa"), Is.EqualTo('a'));
+                Assert.That(e.GetMostFrequent("mamaaa"), Is.EqualTo('a'))
                 Assert.That(e.GetMostFrequent("gaga"), Is.EqualTo('g'));
                 Assert.That(e.GetMostFrequent("agag"), Is.EqualTo('a'));
                 Assert.That(e.GetMostFrequent("123123"), Is.EqualTo('3'));
