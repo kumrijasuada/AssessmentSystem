@@ -140,7 +140,7 @@ jobs:
 
       - name: Update Google Sheet
         env:
-          GOOGLE_SHEETS_CREDENTIALS: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}
+          BASE64_ENCODED_CREDENTIALS: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}
           SHEET_URL: 'https://docs.google.com/spreadsheets/d/1zjlEgnJLeNjdJmlS7j-1u-jchSdktE0SDvnOFRz7P0o/edit'
           TEST_RESULT: ${{ steps.get-result-output.outputs.test_result }}
         run: |
