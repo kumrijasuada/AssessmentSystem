@@ -151,8 +151,19 @@ jobs:
             gc = gspread.authorize(credentials); \
             sh = gc.open_by_url('${{ env.SHEET_URL }}'); \
             worksheet = sh.get_worksheet(0); \
-            test_result = '${{ env.TEST_RESULT }}'.split('<br>'); \
-            worksheet.append_row(test_result)"
+             # Parse the results string
+            results = '${{ env.TEST_RESULT }}'; \
+            total_points = re.search(r"Total Points: \*\*(\d+)\*\*", results).group(1); \
+            passed = re.search(r"Passed: \*\*(\d+)\*\*", results).group(1); \
+            fail = re.search(r"Fail: \*\*(\d+)\*\*", results).group(1); \
+
+            # Find the next available row (first empty row)
+            next_row = len(worksheet.get_all_values()) + 1; \
+
+            # Write data to specific columns: B (Total Points), C (Passed), E (Fail)
+            worksheet.update_acell(f'B{next_row}', total_points); \
+            worksheet.update_acell(f'C{next_row}', passed); \
+            worksheet.update_acell(f'E{next_row}', fail); \"
 
   send-notification:
     needs: get-result
