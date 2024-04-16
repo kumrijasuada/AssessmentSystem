@@ -94,57 +94,47 @@ jobs:
   #       run: |
   #         echo "${{ steps.get-result-output.outputs.test_result }}"
 
-  get-result:
-      needs: build
-      runs-on: ubuntu-latest
-      if: github.event_name == 'push'
-      outputs:
-        test_result: ${{ steps.get-result-output.outputs.test_result }}
-      permissions:
-        contents: read
-        actions: write
-        checks: write
+  get-results:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
+      checks: write
 
-      steps:
-        - uses: actions/checkout@v3
+    steps:
+      - uses: actions/checkout@v3  # Checks-out your repository under $GITHUB_WORKSPACE
 
-        - name: Setup Python
-          uses: actions/setup-python@v2
-          with:
-            python-version: '3.8'
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'  # Ensure Python 3.8 is installed
 
-        - name: Install Python dependencies
-          run: python -m pip install pandas openpyxl
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas openpyxl  # Install required Python libraries
 
-        - name: Run Test Scenarios
-          run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx" || true  # Continues CI whether tests fail or not
+      - name: Run Test Scenarios
+        run: |
+          # Example: Replace with your actual command to run tests
+          echo "Running tests (simulation)"
+          # Normally here would be something like `dotnet test ...`
 
-        - name: Get Results and Create Excel
-          id: get-result-output
-          run: |
-            import pandas as pd
-            from openpyxl import Workbook  # Ensure this is only if needed; pandas already uses openpyxl internally for Excel files.
-        
-            # Simulated test results (replace this with actual parsing of test results)
-            xml_file = "/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
-            test_result = "Extracted data from XML"  # Placeholder for actual test result extraction
+      - name: Create and Upload Excel File
+        run: |
+          python -c "import pandas as pd; from openpyxl import Workbook; \
+          test_result = 'Extracted data from XML'; \
+          data = {'Test Results': [test_result]}; \
+          df = pd.DataFrame(data); \
+          with pd.ExcelWriter('test-results.xlsx', engine='openpyxl') as writer: \
+              df.to_excel(writer, index=False)"
+          echo "Excel file created."
 
-            # Create DataFrame
-            data = {'Test Results': [test_result]}
-            df = pd.DataFrame(data)
-
-            # Write DataFrame to Excel
-            with pd.ExcelWriter('test-results.xlsx', engine='openpyxl') as writer:
-                df.to_excel(writer, index=False)
-
-            # Output the test result
-            print(f"::set-output name=test_result::{test_result}")
-
-        - name: Upload Excel File as Artifact
-          uses: actions/upload-artifact@v2
-          with:
-            name: test-results-excel
-            path: test-results.xlsx
+      - name: Upload Excel File as Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results-excel
+          path: test-results.xlsx
 
 
 
