@@ -125,7 +125,6 @@ jobs:
             test_result=$(grep -o '<StdOut>.*</StdOut>' "$xml_file" | sed 's/<StdOut>\(.*\)<\/StdOut>/\1/')
             echo "::set-output name=test_result::$test_result"
  
-
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -136,24 +135,33 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          python -m pip install --upgrade pip
+          pip install --upgrade pip
           pip install gspread google-auth
 
       - name: Update Google Sheet
         env:
-          CREDENTIALS_JSON: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}
-          TEST_RESULT: ${{ steps.get-result-output.outputs.test_result }}
+          CREDENTIALS_JSON: ${{ secrets.CREDENTIALS_JSON }}
           SHEET_URL: 'https://docs.google.com/spreadsheets/d/1zjlEgnJLeNjdJmlS7j-1u-jchSdktE0SDvnOFRz7P0o/edit'
+          TEST_RESULT: ${{ steps.get-result-output.outputs.test_result }}
         run: |
-            python -c "import gspread, json; from google.oauth2.service_account import Credentials; \
-            creds_json = json.loads('${{ env.CREDENTIALS_JSON }}'.replace('\'', '\\\'')); \
-            credentials = Credentials.from_service_account_info(creds_json); \
-            gc = gspread.authorize(credentials); \
-            sh = gc.open_by_url('${{ env.SHEET_URL }}'); \
-            worksheet = sh.get_worksheet(0); \
-            test_result = '${{ env.TEST_RESULT }}'.split('&lt;br&gt;'); \
-            worksheet.append_row(test_result)"
+          import gspread
+          from google.oauth2.service_account import Credentials
+          import json
 
+          # Load credentials
+          creds_json = json.loads("${{ env.CREDENTIALS_JSON }}")
+          credentials = Credentials.from_service_account_info(creds_json)
+
+          # Access the spreadsheet
+          gc = gspread.authorize(credentials)
+          sh = gc.open_by_url("${{ env.SHEET_URL }}")
+
+          # Select the first worksheet
+          worksheet = sh.get_worksheet(0)
+
+          # Convert TEST_RESULT to list and append to the sheet
+          test_result = "${{ env.TEST_RESULT }}".split('<br>')
+          worksheet.append_row(test_result)
 
   send-notification:
     needs: get-result
