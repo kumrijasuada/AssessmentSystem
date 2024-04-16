@@ -157,7 +157,7 @@ jobs:
           git config --global user.name 'Ada'
           git config --global user.email 'kumrijasuada@gmail.com'
           git checkout -b develop
-          git reset --hard origin/develop
+          git reset --hard origin develop
           git add test-results.xlsx
           git commit -m "Update test results Excel file" 
           git push
