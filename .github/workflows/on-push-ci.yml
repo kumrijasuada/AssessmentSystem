@@ -140,9 +140,9 @@ jobs:
          python -c """
          import pandas as pd
          from openpyxl import Workbook
-          import os
-          test_data = os.getenv('TEST_RESULT')
-          data = {'Test Results': [test_data]}
+         import os
+         test_data = os.getenv('TEST_RESULT')
+         data = {'Test Results': [test_data]}
          df = pd.DataFrame(data)
          with pd.ExcelWriter('test-results.xlsx', engine='openpyxl') as writer:
             df.to_excel(writer, index=False)
