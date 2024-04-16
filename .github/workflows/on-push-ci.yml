@@ -97,6 +97,8 @@ jobs:
   get-result:
     needs: build
     runs-on: ubuntu-latest
+    outputs:
+      test_result: ${{ steps.get-result-output.outputs.test_result }}
     permissions:
       contents: read
       actions: write
@@ -104,6 +106,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3  # Checks-out your repository under $GITHUB_WORKSPACE
+      - name: Checkout Code
+        uses: actions/setup-dotnet@v3
+        with:
+            dotnet-version: ${{ vars.DOTNET_VERSION }}
+            source-url: ${{ vars.NUGET_SOURCE_URL }}
+        env:
+           NUGET_AUTH_TOKEN: ${{ secrets.NUGET_TOKEN }}
+           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Setup Python
         uses: actions/setup-python@v2
@@ -116,15 +126,28 @@ jobs:
           pip install pandas openpyxl  # Install required Python libraries
 
       - name: Run Test Scenarios
+        run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx" || true  *With this CI continue to run whether tests fail or not
+
+      - name: Get Results
+        id: get-result-output
         run: |
-          # Example: Replace with your actual command to run tests
-          echo "Running tests (simulation)"
-          # Normally here would be something like `dotnet test ...`
+            xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
+            test_result=$(grep -o '<StdOut>.*</StdOut>' "$xml_file" | sed 's/<StdOut>\(.*\)<\/StdOut>/\1/')
+            echo "::set-output name=test_result::$test_result"
 
       - name: Create and Upload Excel File
         run: |
-          python -c "import pandas as pd; from openpyxl import Workbook; test_result = 'Extracted data from XML'; data = {'Test Results': [test_result]}; df = pd.DataFrame(data); with pd.ExcelWriter('test-results.xlsx', engine='openpyxl') as writer: df.to_excel(writer, index=False)"
-          echo "Excel file created."
+         python -c """
+         import pandas as pd
+         from openpyxl import Workbook
+         test_result = 'Extracted data from XML'
+         data = {'Test Results': [test_result]}
+         df = pd.DataFrame(data)
+         with pd.ExcelWriter('test-results.xlsx', engine='openpyxl') as writer:
+            df.to_excel(writer, index=False)
+         """
+            echo "Excel file created."
+
 
 
       - name: Upload Excel File as Artifact
