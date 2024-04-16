@@ -144,12 +144,15 @@ jobs:
           SHEET_URL: 'https://docs.google.com/spreadsheets/d/1zjlEgnJLeNjdJmlS7j-1u-jchSdktE0SDvnOFRz7P0o/edit'
           TEST_RESULT: ${{ steps.get-result-output.outputs.test_result }}
         run: |
+            python3 -c "import json, base64; \
             creds_json = json.loads(base64.b64decode('${{ env.GOOGLE_SHEETS_CREDENTIALS }}').decode('utf-8')); \
+            print(creds_json)"  # This line is for demonstration and can be replaced with your actual processing logic
+            # creds_json = json.loads(base64.b64decode('${{ env.GOOGLE_SHEETS_CREDENTIALS }}').decode('utf-8')); \
             credentials = Credentials.from_service_account_info(creds_json); \
             gc = gspread.authorize(credentials); \
             sh = gc.open_by_url('${{ env.SHEET_URL }}'); \
             worksheet = sh.get_worksheet(0); \
-            test_result = 'testing'; \
+            test_result = ${{ env.TEST_RESULT }}; \
             worksheet.append_row(test_result)"
             # ${{ env.TEST_RESULT }}
   send-notification:
