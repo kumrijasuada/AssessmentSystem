@@ -19,12 +19,14 @@ jobs:
       actions: write
     env:
       ACTIONS_STEP_DEBUG: true
+    outputs:
+      studentname: ${{ steps.set_output.outputs.studentname }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
         
       - name: Determine branch names and check conditions
-        id: student-name
+        id: set_output
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             SOURCE_BRANCH="${{ github.event.pull_request.head.ref }}"
@@ -110,7 +112,7 @@ jobs:
           BASE64_ENCODED_CREDENTIALS: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}
           SHEET_URL: 'https://docs.google.com/spreadsheets/d/1zjlEgnJLeNjdJmlS7j-1u-jchSdktE0SDvnOFRz7P0o/edit'
           TEST_RESULT: ${{ steps.get-result-output.outputs.test_result }}
-          STUDENT: ${{ steps.student-name.outputs.studentname }}
+          STUDENT: ${{ needs.build.outputs.studentname }}
         run: |
               python3 -c "import json, base64, gspread, re; from google.oauth2.service_account import Credentials; \
               creds_json = json.loads(base64.b64decode('${{ env.BASE64_ENCODED_CREDENTIALS }}').decode('utf-8')); \
