@@ -58,38 +58,79 @@ jobs:
         if: github.event_name == 'push'
         run: dotnet build AssessGrader.sln
 
-  get-result:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push'
-    outputs:
-      test_result: ${{ steps.get-result-output.outputs.test_result }}
-    permissions: write-all
+  # get-result:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   if: github.event_name == 'push'
+  #   outputs:
+  #     test_result: ${{ steps.get-result-output.outputs.test_result }}
+  #   permissions: write-all
 
-    steps:
-      - uses: actions/checkout@v3
-      - name: Checkout Code
-        uses: actions/setup-dotnet@v3
-        with:
-           dotnet-version: ${{ vars.DOTNET_VERSION }}
-           source-url: ${{ vars.NUGET_SOURCE_URL }}
-        env:
-          NUGET_AUTH_TOKEN: ${{ secrets.NUGET_TOKEN }}
-          GITHUB_TOKEN: ${{ github.token }}
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Checkout Code
+  #       uses: actions/setup-dotnet@v3
+  #       with:
+  #          dotnet-version: ${{ vars.DOTNET_VERSION }}
+  #          source-url: ${{ vars.NUGET_SOURCE_URL }}
+  #       env:
+  #         NUGET_AUTH_TOKEN: ${{ secrets.NUGET_TOKEN }}
+  #         GITHUB_TOKEN: ${{ github.token }}
 
-      - name: Run Test Scenarios
-        run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx" || true  *With this CI continue to run whether tests fail or not
+  #     - name: Run Test Scenarios
+  #       run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx" || true  *With this CI continue to run whether tests fail or not
 
-      - name: Get Results
-        id: get-result-output
-        run: |
-            xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
-            test_result=$(grep -o '<StdOut>.*</StdOut>' "$xml_file" | sed 's/<StdOut>\(.*\)<\/StdOut>/\1/')
-            echo "::set-output name=test_result::$test_result"
+  #     - name: Get Results
+  #       id: get-result-output
+  #       run: |
+  #           xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
+  #           test_result=$(grep -o '<StdOut>.*</StdOut>' "$xml_file" | sed 's/<StdOut>\(.*\)<\/StdOut>/\1/')
+  #           echo "::set-output name=test_result::$test_result"
    
-      - name: Print Test Results
-        run: |
-          echo "${{ steps.get-result-output.outputs.test_result }}"
+  #     - name: Print Test Results
+  #       run: |
+  #         echo "${{ steps.get-result-output.outputs.test_result }}"
+
+  get-result:
+     needs: build
+     runs-on: ubuntu-latest
+     if: github.event_name == 'push'
+     outputs:
+       test_result: ${{ steps.get-result-output.outputs.test_result }}
+     permissions: write-all
+
+     steps:
+       - uses: actions/checkout@v3
+  
+       - name: Setup Python
+         uses: actions/setup-python@v2
+         with:
+           python-version: '3.8'
+
+       - name: Install Python dependencies
+         run: python -m pip install pandas openpyxl
+
+       - name: Run Test Scenarios
+         run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx" || true  # Continues CI whether tests fail or not
+
+       - name: Get Results and Create Excel
+         id: get-result-output
+         run: |
+          import pandas as pd
+          xml_file = "/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
+          test_result = "Extracted data from XML"  # Replace this with real XML parsing logic
+          data = {'Test Results': [test_result]}
+          df = pd.DataFrame(data)
+          with pd.ExcelWriter('test-results.xlsx', engine='openpyxl') as writer:
+              df.to_excel(writer, index=False)
+          echo "::set-output name=test_result::$test_result"
+
+       - name: Upload Excel File as Artifact
+         uses: actions/upload-artifact@v2
+         with:
+           name: test-results-excel
+           path: test-results.xlsx
+
 
   send-notification:
     needs: get-result
