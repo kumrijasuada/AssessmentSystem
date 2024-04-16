@@ -154,14 +154,26 @@ jobs:
 
       - name: Commit and Push changes
         run: |
-          git config --global user.name 'Ada'
-          git config --global user.email 'kumrijasuada@gmail.com'
-          git checkout -b develop
-          git add test-results.xlsx
-          git commit -m "Update test results Excel file"
-          git push origin develop
+            # Set up Git configuration
+            git config --global user.name 'Ada'
+            git config --global user.email 'kumrijasuada@gmail.com'
+    
+            # Checkout a new branch or switch to an existing one
+            git checkout -b develop
+    
+            # Add changes to staging
+            git add test-results.xlsx
+    
+            # Commit changes
+            git commit -m "Update test results Excel file"
+    
+            # Set up the auth to use the GITHUB_TOKEN
+            git config --global http.extraheader "AUTHORIZATION: bearer ${{ secrets.GITHUB_TOKEN }}"
+    
+            # Push changes
+            git push origin develop
         env:
-           GITHUB_TOKEN: ${{ github.token }}
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
   send-notification:
