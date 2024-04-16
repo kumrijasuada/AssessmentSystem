@@ -144,7 +144,7 @@ jobs:
           SHEET_URL: 'https://docs.google.com/spreadsheets/d/1zjlEgnJLeNjdJmlS7j-1u-jchSdktE0SDvnOFRz7P0o/edit'
           TEST_RESULT: ${{ steps.get-result-output.outputs.test_result }}
         run: |
-            python3 -c "import json, base64, gspread; from google.oauth2.service_account import Credentials; \
+            python3 -c "import json, base64, gspread; from google.oauth2.service_account import Credentials; re; \
             creds_json = json.loads(base64.b64decode('${{ env.GOOGLE_SHEETS_CREDENTIALS }}').decode('utf-8')); \
             scopes = ['https://www.googleapis.com/auth/spreadsheets']; \
             credentials = Credentials.from_service_account_info(creds_json, scopes=scopes); \
