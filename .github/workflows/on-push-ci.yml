@@ -136,6 +136,8 @@ jobs:
             echo "::set-output name=test_result::$test_result"
 
       - name: Create and Upload Excel File
+        env:
+          TEST_RESULT: ${{ steps.get-result-output.outputs.test_result }}
         run: |
          python -c """
          import pandas as pd
@@ -148,8 +150,6 @@ jobs:
             df.to_excel(writer, index=False)
          """
             echo "Excel file created."
-         env:
-          TEST_RESULT: ${{ steps.get-result-output.outputs.test_result }}
 
 
       - name: Upload Excel File as Artifact
