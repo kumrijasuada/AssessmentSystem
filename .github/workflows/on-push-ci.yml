@@ -20,20 +20,20 @@ jobs:
     env:
       ACTIONS_STEP_DEBUG: true
     outputs:
-       studentname: ${{ steps.build-output.outputs.studentname }}
+      studentname: ${{ steps.set_output.outputs.studentname }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
         
       - name: Determine branch names and check conditions
-        id: build-output
+        id: set_output
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             SOURCE_BRANCH="${{ github.event.pull_request.head.ref }}"
             DEST_BRANCH="${{ github.event.pull_request.base.ref }}"
             echo "PR from $SOURCE_BRANCH to $DEST_BRANCH"
             SPECIFIC_SOURCE_PART=${SOURCE_BRANCH##*/}
-            echo "::set-output name=studentname::$SPECIFIC_SOURCE_PART"
+            echo "studentname=$SPECIFIC_SOURCE_PART" >> $GITHUB_OUTPUT
             if [[ "$DEST_BRANCH" == *"$SPECIFIC_SOURCE_PART"* ]]; then
               echo "Destination branch '$DEST_BRANCH' contains the specific part of the source branch name '$SPECIFIC_SOURCE_PART'."
             else
@@ -43,10 +43,10 @@ jobs:
           elif [ "${{ github.event_name }}" = "push" ]; then
             BRANCH_NAME="${GITHUB_REF#refs/heads/}"
             SPECIFIC_SOURCE_PART=${BRANCH_NAME##*/}
-            echo "::set-output name=studentname::$SPECIFIC_SOURCE_PART"
+            echo "studentname=$SPECIFIC_SOURCE_PART" >> $GITHUB_OUTPUT
             echo "Push to $BRANCH_NAME"
           fi
-
+          
       - uses: actions/checkout@v3
       - name: Checkout Code
         if: github.event_name == 'push'
@@ -112,7 +112,7 @@ jobs:
           BASE64_ENCODED_CREDENTIALS: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}
           SHEET_URL: 'https://docs.google.com/spreadsheets/d/1zjlEgnJLeNjdJmlS7j-1u-jchSdktE0SDvnOFRz7P0o/edit'
           TEST_RESULT: ${{ steps.get-result-output.outputs.test_result }}
-          STUDENT: ${{ steps.build-output.outputs.studentname }}
+          STUDENT: ${{ needs.build.outputs.studentname }}
         run: |
               python3 -c "import json, base64, gspread, re; from google.oauth2.service_account import Credentials; \
               creds_json = json.loads(base64.b64decode('${{ env.BASE64_ENCODED_CREDENTIALS }}').decode('utf-8')); \
