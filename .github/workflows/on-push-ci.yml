@@ -21,10 +21,22 @@ jobs:
       ACTIONS_STEP_DEBUG: true
     outputs:
       studentname: ${{ steps.set_output.outputs.studentname }}
+      changes_present: ${{ steps.filter.outputs.changes_present }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        
+
+      - name: Check for changes
+        id: filter
+        run: |
+          git fetch origin ${{ github.base_ref }}
+          CHANGES=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | wc -l)
+          if [ "$CHANGES" -gt "0" ]; then
+            echo "::set-output name=changes_present::true"
+          else
+            echo "::set-output name=changes_present::false"
+          fi
+
       - name: Determine branch names and check conditions
         id: set_output
         run: |
@@ -49,24 +61,24 @@ jobs:
           
       - uses: actions/checkout@v3
       - name: Checkout Code
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && needs.build.outputs.changes_present == 'true'
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ vars.DOTNET_VERSION }}
           source-url: ${{ vars.NUGET_SOURCE_URL }}
 
       - name: Dotnet restore solution
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && needs.build.outputs.changes_present == 'true'
         run: dotnet restore AssessGrader.sln
 
       - name: Dotnet build solution
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && needs.build.outputs.changes_present == 'true'
         run: dotnet build AssessGrader.sln
 
   get-result:
     needs: build
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && needs.build.outputs.changes_present == 'true'
     outputs:
       test_result: ${{ steps.get-result-output.outputs.test_result }}
     permissions:
@@ -137,7 +149,7 @@ jobs:
   send-notification:
     needs: get-result
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && needs.build.outputs.changes_present == 'true'
     permissions: write-all
 
     steps:
