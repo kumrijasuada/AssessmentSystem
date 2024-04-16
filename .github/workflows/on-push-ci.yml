@@ -126,43 +126,42 @@ jobs:
             echo "::set-output name=test_result::$test_result"
  
 
-      - name: Setup Python
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.8'  # Ensure Python 3.8 is installed
+          python-version: '3.x'
 
-      - name: Install Python dependencies
+      - name: Install Dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install pandas openpyxl  # Install required Python libraries
+          pip install --upgrade pip
+          pip install gspread google-auth
 
-      - name: Create and Upload Excel File
+      - name: Update Google Sheet
         env:
-          TEST_RESULT: ${{ steps.get-result-output.outputs.test_result }}
+          CREDENTIALS_JSON: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}
+          TEST_RESULT: 'Sample result'  # This should be set according to your actual test output
+          SHEET_URL: 'https://docs.google.com/spreadsheets/d/1zjlEgnJLeNjdJmlS7j-1u-jchSdktE0SDvnOFRz7P0o/edit'
         run: |
-         python -c """
-         import pandas as pd
-         from openpyxl import Workbook
-         import os
-         test_data = os.getenv('TEST_RESULT')
-         data = {'Test Results': [test_data]}
-         df = pd.DataFrame(data)
-         with pd.ExcelWriter('test-results.xlsx', engine='openpyxl') as writer:
-            df.to_excel(writer, index=False)
-         """
-            echo "Excel file created."
+          import gspread
+          from google.oauth2.service_account import Credentials
+          import json
 
-      - name: Commit and Push changes
-        run: |
-          git config --global user.name 'Ada'
-          git config --global user.email 'kumrijasuada@gmail.com'
-          git fetch origin
-          git add test-results.xlsx
-          git commit -m "Update test results Excel file" 
-          git checkout -b develop origin/develop || git switch -c develop origin/develop
-          git push
-        env:
-           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          # Load credentials
+          creds_json = json.loads('${{ env.CREDENTIALS_JSON }}')
+          credentials = Credentials.from_service_account_info(creds_json)
+
+          # Access the spreadsheet
+          gc = gspread.authorize(credentials)
+          sh = gc.open_by_url('${{ env.SHEET_URL }}')
+
+          # Select the first worksheet
+          worksheet = sh.get_worksheet(0)
+
+          # Update the sheet
+          worksheet.append_row([${{ env.TEST_RESULT }}])
 
 
   send-notification:
