@@ -157,23 +157,19 @@ jobs:
             # Set up Git configuration
             git config --global user.name 'Ada'
             git config --global user.email 'kumrijasuada@gmail.com'
-    
-            # Checkout a new branch or switch to an existing one
+
+            # Check out a new branch or switch to an existing one
             git checkout -b develop
-    
+
             # Add changes to staging
             git add test-results.xlsx
-    
-            # Commit changes
+
+            # Commit the changes
             git commit -m "Update test results Excel file"
-    
-            # Set up the auth to use the GITHUB_TOKEN
-            git config --global http.extraheader "AUTHORIZATION: bearer ${{ secrets.GITHUB_TOKEN }}"
-    
-            # Push changes
-            git push origin develop
-        env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            # Use the GITHUB_TOKEN for HTTP operations directly
+            git -c http.extraheader="AUTHORIZATION: bearer ${{ secrets.GITHUB_TOKEN }}" push origin develop
+
 
 
   send-notification:
