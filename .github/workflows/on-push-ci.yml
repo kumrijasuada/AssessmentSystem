@@ -22,6 +22,8 @@ jobs:
       actions: write
     env:
       ACTIONS_STEP_DEBUG: true
+    outputs:
+       studentname: ${{ steps.build-output.outputs.studentname }}
 
     steps:
       - name: Checkout code
@@ -34,6 +36,7 @@ jobs:
             DEST_BRANCH="${{ github.event.pull_request.base.ref }}"
             echo "PR from $SOURCE_BRANCH to $DEST_BRANCH"
             SPECIFIC_SOURCE_PART=${SOURCE_BRANCH##*/}
+            echo "::set-output name=studentname::$SPECIFIC_SOURCE_PART"
             if [[ "$DEST_BRANCH" == *"$SPECIFIC_SOURCE_PART"* ]]; then
               echo "Destination branch '$DEST_BRANCH' contains the specific part of the source branch name '$SPECIFIC_SOURCE_PART'."
             else
@@ -60,39 +63,6 @@ jobs:
       - name: Dotnet build solution
         if: github.event_name == 'push'
         run: dotnet build AssessGrader.sln
-
-  # get-result:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   if: github.event_name == 'push'
-  #   outputs:
-  #     test_result: ${{ steps.get-result-output.outputs.test_result }}
-  #   permissions: write-all
-
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: Checkout Code
-  #       uses: actions/setup-dotnet@v3
-  #       with:
-  #          dotnet-version: ${{ vars.DOTNET_VERSION }}
-  #          source-url: ${{ vars.NUGET_SOURCE_URL }}
-  #       env:
-  #         NUGET_AUTH_TOKEN: ${{ secrets.NUGET_TOKEN }}
-  #         GITHUB_TOKEN: ${{ github.token }}
-
-  #     - name: Run Test Scenarios
-  #       run: dotnet test ${{ vars.SOLUTION_PATH }} --logger "trx;LogFileName=test-results.trx" || true  *With this CI continue to run whether tests fail or not
-
-  #     - name: Get Results
-  #       id: get-result-output
-  #       run: |
-  #           xml_file="/home/runner/work/AssessmentSystem/AssessmentSystem/Assesment.Tests/TestResults/test-results.trx"
-  #           test_result=$(grep -o '<StdOut>.*</StdOut>' "$xml_file" | sed 's/<StdOut>\(.*\)<\/StdOut>/\1/')
-  #           echo "::set-output name=test_result::$test_result"
-   
-  #     - name: Print Test Results
-  #       run: |
-  #         echo "${{ steps.get-result-output.outputs.test_result }}"
 
   get-result:
     needs: build
@@ -155,6 +125,8 @@ jobs:
               passed = re.search(r'Passed: \*\*(\d+)\*\*', results).group(1); \
               fail = re.search(r'Fail: \*\*(\d+)\*\*', results).group(1); \
               next_row = len(worksheet.get_all_values()) + 1; \
+              
+              worksheet.update_acell(f'A{next_row}', ${{ steps.build-output.outputs.studentname }}); \
               worksheet.update_acell(f'B{next_row}', total_points); \
               worksheet.update_acell(f'C{next_row}', passed); \
               worksheet.update_acell(f'D{next_row}', fail);"
