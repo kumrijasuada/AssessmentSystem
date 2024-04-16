@@ -156,8 +156,8 @@ jobs:
         run: |
           git config --global user.name 'Ada'
           git config --global user.email 'kumrijasuada@gmail.com'
-          git checkout -b develop origin/develop
-          git add test-results.xlsx
+          git fetch origin
+          git checkout -b develop origin/develop || git switch -c develop origin/develop
           git commit -m "Update test results Excel file" 
           git push
         env:
