@@ -159,6 +159,7 @@ jobs:
           git checkout -b develop
           git add test-results.xlsx
           git commit -m "Update test results Excel file"
+          git pull origin develop
           git push origin develop
         env:
            GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
