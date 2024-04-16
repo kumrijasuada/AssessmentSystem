@@ -21,12 +21,12 @@ jobs:
       ACTIONS_STEP_DEBUG: true
     outputs:
        studentname: ${{ steps.build-output.outputs.studentname }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
+        
       - name: Determine branch names and check conditions
+        id: build-output
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             SOURCE_BRANCH="${{ github.event.pull_request.head.ref }}"
@@ -44,7 +44,6 @@ jobs:
             BRANCH_NAME="${GITHUB_REF#refs/heads/}"
             SPECIFIC_SOURCE_PART=${BRANCH_NAME##*/}
             echo "::set-output name=studentname::$SPECIFIC_SOURCE_PART"
-            echo "Student Name $SPECIFIC_SOURCE_PART"
             echo "Push to $BRANCH_NAME"
           fi
 
