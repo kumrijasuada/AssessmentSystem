@@ -150,7 +150,7 @@ jobs:
               gc = gspread.authorize(credentials); \
               sh = gc.open_by_url('${{ env.SHEET_URL }}'); \
               worksheet = sh.get_worksheet(0); \
-              results = 'Total Points: **30**<br>Passed: **28**<br>Fail: **2**'; \
+              results = '${{ env.TEST_RESULT }}'; \
               total_points = re.search(r'Total Points: \*\*(\d+)\*\*', results).group(1); \
               passed = re.search(r'Passed: \*\*(\d+)\*\*', results).group(1); \
               fail = re.search(r'Fail: \*\*(\d+)\*\*', results).group(1); \
