@@ -27,23 +27,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Check for changes
+      - name: Check for Pull Request
         id: filter
         run: |
-            # Fetch branches from the remote
-            git fetch origin ${{ github.base_ref }}:${{ github.base_ref }}
-            git fetch origin ${{ github.head_ref }}:${{ github.head_ref }}
+            pr_number=$(git log -1 --pretty=format:%s | grep -oP '#\d+')
+            pr_number=${pr_number//#/}  # Remove '#' symbol
 
-            # Calculate the number of changed files
-            CHANGES=$(git diff --name-only origin/${{ github.base_ref }}...origin/${{ github.head_ref }} | wc -l)
-
-            # Check if there are more than 0 changed files
-            if [ "$CHANGES" -gt "0" ]; then
-              echo "Changes detected: $CHANGES file(s) changed."
-              echo "::set-output name=changes_present::true"
+            if [ -n "$pr_number" ]; then
+                echo "PR number is $pr_number"
+                echo "::set-output name=changes_present::true"
             else
-              echo "No changes detected."
-              echo "::set-output name=changes_present::false"
+                echo "No PR number found"
+                echo "::set-output name=changes_present::false"
             fi
 
       - name: Determine branch names and check conditions

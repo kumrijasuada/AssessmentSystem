@@ -17,7 +17,7 @@
                 result *= i;
             }
 
-            return 1;
+            return result;
         }
 
         // Write a C# program that checks whether a given string is a palindrome or not
