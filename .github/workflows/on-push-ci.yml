@@ -115,7 +115,7 @@ jobs:
   update-worksheet:
     needs: [build,get-result]
     runs-on: ubuntu-latest
-    if: always()
+    if: always() && needs.build.outputs.changes_present == 'true'
     permissions:
       contents: write
       actions: write
@@ -142,10 +142,6 @@ jobs:
             TEST_RESULT: ${{ needs.get-result.outputs.test_result }}
             STUDENT: ${{ needs.build.outputs.studentname }}
           run: |
-            if [ "${{ needs.build.outputs.changes_present }}" == "false" ]; then
-                    echo "No changes present. Exiting without error."
-                    exit 0  # Exit cleanly
-                  fi
                     python -c "import json, base64, gspread, re; from google.oauth2.service_account import Credentials; \
                     creds_json = json.loads(base64.b64decode('${{ env.BASE64_ENCODED_CREDENTIALS }}').decode('utf-8')); \
                     credentials = Credentials.from_service_account_info(creds_json, scopes=['https://www.googleapis.com/auth/spreadsheets']); \
