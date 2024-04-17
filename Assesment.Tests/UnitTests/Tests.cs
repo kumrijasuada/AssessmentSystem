@@ -38,7 +38,7 @@ namespace Assesment.Tests.UnitTests
         }
 
         [Test]
-        [PointsCalculator(8, 1)]
+        [PointsCalculator(9, 1)]
         public void VerifyPalindrome()
         {
             Assert.Multiple(() =>
