@@ -33,7 +33,7 @@ namespace Assesment.Tests.UnitTests
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(Exam.Factorial(5), Is.EqualTo(120));
+                Assert.That(Exam.Factorial(5), Is.EqualTo(120))
                 Assert.That(Exam.Factorial(2), Is.EqualTo(4));
                 Assert.That(Exam.Factorial(7), Is.EqualTo(5040));
                 Assert.That(Exam.Factorial(1), Is.EqualTo(1));
