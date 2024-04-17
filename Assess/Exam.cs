@@ -16,7 +16,6 @@
             {
                 result *= i;
             }
-
             return 1;
         }
 
