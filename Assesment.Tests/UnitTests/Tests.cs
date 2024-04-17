@@ -8,7 +8,7 @@ namespace Assesment.Tests.UnitTests
     public class Tests
     {
         [Test]
-        [PointsCalculator(20, 4)]
+        [PointsCalculator(10, 2)]
         public void GetMostFrequent()
         {
             Exam e = new();
@@ -79,6 +79,21 @@ namespace Assesment.Tests.UnitTests
                 Assert.That(Exam.GeneratePrimes(10), Is.EqualTo(expected2));
                 Assert.That(Exam.GeneratePrimes(20), Is.EqualTo(expected3));
                 Assert.That(Exam.GeneratePrimes(50), Is.EqualTo(expected4));
+            });
+        }
+
+        [Test]
+        [PointsCalculator(10, 2)]
+        public void Test_ReverseNum()
+        {
+            // Arrange & Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(Exam.ReverseNum(12345), Is.EqualTo(54321));
+                Assert.That(Exam.ReverseNum(-12345), Is.EqualTo(-54321));
+                Assert.That(Exam.ReverseNum(0), Is.EqualTo(0));
+                Assert.That(Exam.ReverseNum(7), Is.EqualTo(7));
+                Assert.That(Exam.ReverseNum(1000), Is.EqualTo(1));
             });
         }
 
