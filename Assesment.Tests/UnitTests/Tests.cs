@@ -31,14 +31,14 @@ namespace Assesment.Tests.UnitTests
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.AreEqual(120, result);
+                Assert.That(result, Is.EqualTo(120));
                 Assert.That(result, Is.EqualTo(120));
                 Assert.Throws<ArgumentException>(() => Exam.Factorial(-5), $"Factorial of {-5} should throw ArgumentException.");
             });
         }
 
         [Test]
-        [PointsCalculator(8, 1)]
+        [PointsCalculator(9, 1)]
         public void VerifyPalindrome()
         {
             Assert.Multiple(() =>
@@ -48,6 +48,7 @@ namespace Assesment.Tests.UnitTests
                 Assert.That(Exam.IsPalindrome("level"), Is.True);
                 Assert.That(Exam.IsPalindrome("radar"), Is.True);
                 Assert.That(Exam.IsPalindrome("hello"), Is.False);
+                Assert.That(Exam.IsPalindrome("hi"), Is.False);
                 Assert.That(Exam.IsPalindrome("Panama!"), Is.False);
                 Assert.That(Exam.IsPalindrome("!@#$%^&*()"), Is.True);
                 Assert.That(Exam.IsPalindrome("A!@#$%^&*()a"), Is.True);
