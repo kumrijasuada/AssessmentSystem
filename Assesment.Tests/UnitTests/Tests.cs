@@ -36,7 +36,7 @@ namespace Assesment.Tests.UnitTests
                 Assert.That(Exam.Factorial(5), Is.EqualTo(120));
                 Assert.That(Exam.Factorial(2), Is.EqualTo(4));
                 Assert.That(Exam.Factorial(7), Is.EqualTo(5040));
-                Assert.That(Exam.Factorial(1), Is.EqualTo(1));
+                Assert.That(Exam.Factorial(1), Is.EqualTo(2));
                 Assert.Throws<ArgumentException>(() => Exam.Factorial(-5), $"Factorial of {-5} should throw ArgumentException.");
             });
         }
