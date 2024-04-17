@@ -37,6 +37,7 @@ namespace Assesment.Tests.UnitTests
             });
         }
 
+
         [Test]
         [PointsCalculator(9, 1)]
         public void VerifyPalindrome()
