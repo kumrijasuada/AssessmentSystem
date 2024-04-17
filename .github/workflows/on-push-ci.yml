@@ -169,7 +169,7 @@ jobs:
   send-notification:
     needs: [build,get-result]
     runs-on: ubuntu-latest
-    if: always()
+    if: always() && needs.build.outputs.changes_present == 'true'
     permissions: write-all
 
     steps:
@@ -188,10 +188,6 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const IsPr = '${{ needs.build.outputs.changes_present }}';
-            if (IsPr === 'false'){
-            exit 0
-            }
             const testResult = '${{ needs.get-result.outputs.test_result }}';
             let formattedResult;
             if (testResult.trim() === '') {
