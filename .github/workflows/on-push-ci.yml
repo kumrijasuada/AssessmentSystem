@@ -64,18 +64,18 @@ jobs:
           
       - uses: actions/checkout@v3
       - name: Checkout Code
-        if: github.event_name == 'push' && needs.build.outputs.changes_present == 'true'
+        if: github.event_name == 'push' && steps.filter.outputs.changes_present == 'true'
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ vars.DOTNET_VERSION }}
           source-url: ${{ vars.NUGET_SOURCE_URL }}
 
       - name: Dotnet restore solution
-        if: github.event_name == 'push' && needs.build.outputs.changes_present == 'true'
+        if: github.event_name == 'push' && steps.filter.outputs.changes_present == 'true'
         run: dotnet restore AssessGrader.sln
 
       - name: Dotnet build solution
-        if: github.event_name == 'push' && needs.build.outputs.changes_present == 'true'
+        if: github.event_name == 'push' && steps.filter.outputs.changes_present == 'true'
         run: dotnet build AssessGrader.sln
 
 
@@ -131,29 +131,46 @@ jobs:
           TEST_RESULT: ${{ steps.get-result-output.outputs.test_result }}
           STUDENT: ${{ needs.build.outputs.studentname }}
         run: |
-              python3 -c "import json, base64, gspread, re; from google.oauth2.service_account import Credentials; \
-              creds_json = json.loads(base64.b64decode('${{ env.BASE64_ENCODED_CREDENTIALS }}').decode('utf-8')); \
-              credentials = Credentials.from_service_account_info(creds_json, scopes=['https://www.googleapis.com/auth/spreadsheets']); \
-              gc = gspread.authorize(credentials); \
-              sh = gc.open_by_url('${{ env.SHEET_URL }}'); \
-              worksheet = sh.get_worksheet(0); \
-              results = '${{ env.TEST_RESULT }}'; \
-              name = '${{ env.STUDENT }}'; \
-              print(name); \
-              formatted_name = re.sub(r'(?<=[a-z])(?=[A-Z])', ' ', name); \
-              if results.strip() == '': \
-              total_points = '50'; \
-              passed ='0'; \
-              fail='50'; \
-              else: \
-              total_points = re.search(r'Total Points: \*\*(\d+)\*\*', results).group(1); \
-              passed = re.search(r'Passed: \*\*(\d+)\*\*', results).group(1); \
-              fail = re.search(r'Fail: \*\*(\d+)\*\*', results).group(1); \
-              next_row = len(worksheet.get_all_values()) + 1; \
-              worksheet.update_acell(f'A{next_row}', formatted_name); \
-              worksheet.update_acell(f'B{next_row}', total_points); \
-              worksheet.update_acell(f'C{next_row}', passed); \
-              worksheet.update_acell(f'D{next_row}', fail);"
+              run: |
+                  python3 -c "
+                import json, base64, gspread, re
+                from google.oauth2.service_account import Credentials
+
+                # Decode and load credentials
+                creds_json = json.loads(base64.b64decode('${{ env.BASE64_ENCODED_CREDENTIALS }}').decode('utf-8'))
+                credentials = Credentials.from_service_account_info(creds_json, scopes=['https://www.googleapis.com/auth/spreadsheets'])
+
+                # Authorize and open the spreadsheet
+                gc = gspread.authorize(credentials)
+                sh = gc.open_by_url('${{ env.SHEET_URL }}')
+                worksheet = sh.get_worksheet(0)
+
+                # Retrieve environment variables
+                results = '${{ env.TEST_RESULT }}'
+                name = '${{ env.STUDENT }}'
+
+                # Format name to insert spaces before capital letters if next to lowercase letters
+                formatted_name = re.sub(r'(?<=[a-z])(?=[A-Z])', ' ', name)
+                print(formatted_name)
+
+                # Determine score and update spreadsheet based on results
+                if results.strip() == '':
+                    total_points = '50'
+                    passed = '0'
+                    fail = '50'
+                else:
+                    total_points = re.search(r'Total Points: \*\*(\d+)\*\*', results).group(1)
+                    passed = re.search(r'Passed: \*\*(\d+)\*\*', results).group(1)
+                    fail = re.search(r'Fail: \*\*(\d+)\*\*', results).group(1)
+
+                # Find the next empty row
+                next_row = len(worksheet.get_all_values()) + 1
+
+                # Update the spreadsheet
+                worksheet.update_acell(f'A{next_row}', formatted_name)
+                worksheet.update_acell(f'B{next_row}', total_points)
+                worksheet.update_acell(f'C{next_row}', passed)
+                worksheet.update_acell(f'D{next_row}', fail)"     
 
 
   send-notification:
