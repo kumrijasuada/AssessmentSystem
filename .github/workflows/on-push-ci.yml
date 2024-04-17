@@ -141,14 +141,11 @@ jobs:
                   results = '${{ env.TEST_RESULT }}'; \
                   name = '${{ env.STUDENT }}'; \
                   formatted_name = re.sub(r'(?<=[a-z])(?=[A-Z])', ' ', name); \
-                  if results.strip() == '': \
-                    total_points = '50'; \
-                    passed = '0'; \
-                    fail = '50'; \
-                  else: \
-                    total_points = re.search(r'Total Points: \*\*(\d+)\*\*', results).group(1); \
-                    passed = re.search(r'Passed: \*\*(\d+)\*\*', results).group(1); \
-                    fail = re.search(r'Fail: \*\*(\d+)\*\*', results).group(1); \
+                  total_points, passed, fail = ('50', '0', '50') if results.strip() == '' else ( \
+                  re.search(r'Total Points: \*\*(\d+)\*\*', results).group(1), \
+                  re.search(r'Passed: \*\*(\d+)\*\*', results).group(1), \
+                  re.search(r'Fail: \*\*(\d+)\*\*', results).group(1) \
+                  ); \
                   next_row = len(worksheet.get_all_values()) + 1; \
                   worksheet.update_acell(f'A{next_row}', formatted_name); \
                   worksheet.update_acell(f'B{next_row}', total_points); \
