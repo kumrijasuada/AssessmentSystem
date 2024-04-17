@@ -61,19 +61,23 @@ jobs:
           
       - uses: actions/checkout@v3
       - name: Checkout Code
-        if: github.event_name == 'push' && needs.build.outputs.changes_present == 'true'
+        # if: github.event_name == 'push' && needs.build.outputs.changes_present == 'true'
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ vars.DOTNET_VERSION }}
           source-url: ${{ vars.NUGET_SOURCE_URL }}
 
       - name: Dotnet restore solution
-        if: github.event_name == 'push' && needs.build.outputs.changes_present == 'true'
+        # if: github.event_name == 'push' && needs.build.outputs.changes_present == 'true'
         run: dotnet restore AssessGrader.sln
 
       - name: Dotnet build solution
-        if: github.event_name == 'push' && needs.build.outputs.changes_present == 'true'
+        # if: github.event_name == 'push' && needs.build.outputs.changes_present == 'true'
         run: dotnet build AssessGrader.sln
+
+
+
+
 
   get-result:
     needs: build
