@@ -167,7 +167,7 @@ jobs:
                     worksheet.update_acell(f'D{next_row}', fail);"
 
   send-notification:
-    needs: get-result
+    needs: [build,get-result]
     runs-on: ubuntu-latest
     if: always()
     permissions: write-all
