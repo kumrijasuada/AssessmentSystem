@@ -82,6 +82,7 @@ namespace Assesment.Tests.UnitTests
             });
         }
 
+
         [Test]
         [PointsCalculator(10, 2)]
         public void Test_ReverseNum()
