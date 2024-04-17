@@ -18,7 +18,7 @@
             }
 
             return result;
-        
+        }
 
         // Write a C# program that checks whether a given string is a palindrome or not
         // (a palindrome is a word, phrase, number, or other sequence of characters that
