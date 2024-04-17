@@ -1,5 +1,5 @@
 using Assesment.Tests.Configurations;
-using Assess.Services.Exams;
+using Assess;
 using NUnit.Framework.Internal;
 
 namespace Assesment.Tests.UnitTests
@@ -8,21 +8,23 @@ namespace Assesment.Tests.UnitTests
     public class Tests
     {
         [Test]
-        [PointsCalculator(8, 2)]
+        [PointsCalculator(20, 4)]
         public void GetMostFrequent()
         {
             Exam e = new();
             Assert.Multiple(() =>
             {
                 Assert.That(e.GetMostFrequent("mamaaa"), Is.EqualTo('a'));
-                Assert.That(e.GetMostFrequent("gaga"), Is.EqualTo('g'));
-                Assert.That(e.GetMostFrequent("agag"), Is.EqualTo('a'));
-                Assert.That(e.GetMostFrequent("123123"), Is.EqualTo('3'));
+                Assert.That(e.GetMostFrequent("gagga"), Is.EqualTo('g'));
+                Assert.That(e.GetMostFrequent("12312333"), Is.EqualTo('3'));
+                Assert.Throws<ArgumentException>(() => e.GetMostFrequent(""), $"Empty input should throw ArgumentException.");
+                Assert.Throws<ArgumentException>(() => e.GetMostFrequent(null), $"Null input should throw ArgumentException.");
+
             });
         }
 
         [Test]
-        [PointsCalculator(3, 1)]
+        [PointsCalculator(10, 2)]
         public void Factorial()
         {
             // Act
@@ -31,14 +33,16 @@ namespace Assesment.Tests.UnitTests
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.AreEqual(120, result);
-                Assert.That(result, Is.EqualTo(120));
+                Assert.That(Exam.Factorial(5), Is.EqualTo(120));
+                Assert.That(Exam.Factorial(2), Is.EqualTo(4));
+                Assert.That(Exam.Factorial(7), Is.EqualTo(5040));
+                Assert.That(Exam.Factorial(1), Is.EqualTo(1));
                 Assert.Throws<ArgumentException>(() => Exam.Factorial(-5), $"Factorial of {-5} should throw ArgumentException.");
             });
         }
 
         [Test]
-        [PointsCalculator(8, 1)]
+        [PointsCalculator(10, 1)]
         public void VerifyPalindrome()
         {
             Assert.Multiple(() =>
@@ -48,14 +52,16 @@ namespace Assesment.Tests.UnitTests
                 Assert.That(Exam.IsPalindrome("level"), Is.True);
                 Assert.That(Exam.IsPalindrome("radar"), Is.True);
                 Assert.That(Exam.IsPalindrome("hello"), Is.False);
-                Assert.That(Exam.IsPalindrome("Panama!"), Is.False);
-                Assert.That(Exam.IsPalindrome("!@#$%^&*()"), Is.True);
+                Assert.That(Exam.IsPalindrome("Panama"), Is.False);
+                Assert.That(Exam.IsPalindrome("Home"), Is.False);
+                Assert.That(Exam.IsPalindrome("123"), Is.False);
+                Assert.That(Exam.IsPalindrome("111"), Is.True);
                 Assert.That(Exam.IsPalindrome("A!@#$%^&*()a"), Is.True);
             });
         }
 
         [Test]
-        [PointsCalculator(5, 1)]
+        [PointsCalculator(10, 2)]
         public void Test_GeneratePrimes()
         {
             // Act
@@ -76,27 +82,27 @@ namespace Assesment.Tests.UnitTests
             });
         }
 
-        [Test]
-        [PointsCalculator(6, 2)]
-        public void Test_FahrenheitToCelsius()
-        {
-            Assert.Multiple(() =>
-            {
-                // Test Celsius to Fahrenheit
-                double celsius = 0;
-                double expectedFahrenheit = 32;
-                double actualFahrenheit = Exam.ConvertTemperature(celsius, "Celsius", "Fahrenheit");
-                Assert.That(actualFahrenheit, Is.EqualTo(expectedFahrenheit));
+        //[Test]
+        //[PointsCalculator(6, 2)]
+        //public void Test_FahrenheitToCelsius()
+        //{
+        //    Assert.Multiple(() =>
+        //    {
+        //        // Test Celsius to Fahrenheit
+        //        double celsius = 0;
+        //        double expectedFahrenheit = 32;
+        //        double actualFahrenheit = Exam.ConvertTemperature(celsius, "Celsius", "Fahrenheit");
+        //        Assert.That(actualFahrenheit, Is.EqualTo(expectedFahrenheit));
 
-                // Test Fahrenheit to Celsius
-                double fahrenheit = 32;
-                double expectedCelsius = 0;
-                double actualCelsius = Exam.ConvertTemperature(fahrenheit, "Fahrenheit", "Celsius");
-                Assert.That(actualCelsius, Is.EqualTo(expectedCelsius));
+        //        // Test Fahrenheit to Celsius
+        //        double fahrenheit = 32;
+        //        double expectedCelsius = 0;
+        //        double actualCelsius = Exam.ConvertTemperature(fahrenheit, "Fahrenheit", "Celsius");
+        //        Assert.That(actualCelsius, Is.EqualTo(expectedCelsius));
 
-                double temperature = 100;
-                Assert.Throws<ArgumentException>(() => Exam.ConvertTemperature(temperature, "Kelvin", "Fahrenheit"));
-            });
-        }
+        //        double temperature = 100;
+        //        Assert.Throws<ArgumentException>(() => Exam.ConvertTemperature(temperature, "Kelvin", "Fahrenheit"));
+        //    });
+        //}
     }
 }

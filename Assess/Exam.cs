@@ -1,4 +1,4 @@
-﻿namespace Assess.Services.Exams
+﻿namespace Assess
 {
     public class Exam
     {
@@ -20,59 +20,28 @@
             return result;
         }
 
-        // Write a program in C# that asks the user for 10 integers to store them in an array of integers
-        // and show only even integers.
-        public static void DisplayEvenNumbers(int[] numbers)
-        {
-            if (numbers.Any())
-            {
-                for (int i = 0; i < 10; i++)
-                {
-                    Console.Write($"Number {i + 1}: ");
-                    if (int.TryParse(Console.ReadLine(), out int num))
-                    {
-                        numbers[i] = num;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid input. Please enter an integer.");
-                        i--;
-                    }
-                }
-
-                Console.WriteLine("\nEven numbers entered:");
-                foreach (var num in numbers)
-                {
-                    if (num % 2 == 0)
-                    {
-                        Console.WriteLine(num);
-                    }
-                }
-            }
-        }
-
         // Write a C# program that checks whether a given string is a palindrome or not
         // (a palindrome is a word, phrase, number, or other sequence of characters that
         // reads the same forward and backward).
         // Example => Ada
-        public static bool IsPalindrome(string str)
+        public static bool IsPalindrome(string value)
         {
-            str = str.ToLower();
+            value = value.ToLower();
             int left = 0;
-            int right = str.Length - 1;
+            int right = value.Length - 1;
 
             while (left < right)
             {
-                while (left < right && !char.IsLetterOrDigit(str[left]))
+                while (left < right && !char.IsLetterOrDigit(value[left]))
                 {
                     left++;
                 }
-                while (left < right && !char.IsLetterOrDigit(str[right]))
+                while (left < right && !char.IsLetterOrDigit(value[right]))
                 {
                     right--;
                 }
 
-                if (str[left] != str[right])
+                if (value[left] != value[right])
                 {
                     return false;
                 }
@@ -147,10 +116,52 @@
 
         public char GetMostFrequent(string input)
         {
-            var charMap = input.Distinct()
-                .ToDictionary(c => c, c => input.Count(s => s == c));
+            if (string.IsNullOrEmpty(input))
+                throw new ArgumentException("Input string cannot be null or empty.");
 
-            return charMap.OrderByDescending(v => v.Value).First().Key;
+            int[] charCount = new int[256];
+            int length = input.Length;
+
+            // Count frequency of each character
+            for (int i = 0; i < length; i++)
+            {
+                charCount[input[i]]++;
+            }
+
+            int maxCount = -1;
+            char character = ' ';
+
+            // Find the character with maximum count
+            for (int i = 0; i < 256; i++)
+            {
+                if (maxCount < charCount[i])
+                {
+                    maxCount = charCount[i];
+                    character = (char)i;
+                }
+            }
+
+            return character;
         }
+
+
+        public static int ReverseNum(int num)
+        {
+            int reversedNum = 0, value;
+
+            int originalSign = num < 0 ? -1 : 1;
+
+            num = Math.Abs(num);
+
+            while (num != 0)
+            {
+                value = num % 10;
+                reversedNum = reversedNum * 10 + value;
+                num /= 10;
+            }
+
+            return reversedNum * originalSign;
+        }
+
     }
 }
