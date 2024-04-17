@@ -132,7 +132,7 @@ jobs:
           STUDENT: ${{ needs.build.outputs.studentname }}
         run: |
               run: |
-                  python3 -c "
+                                   python3 -c "
                 import json, base64, gspread, re
                 from google.oauth2.service_account import Credentials
 
@@ -170,7 +170,8 @@ jobs:
                 worksheet.update_acell(f'A{next_row}', formatted_name)
                 worksheet.update_acell(f'B{next_row}', total_points)
                 worksheet.update_acell(f'C{next_row}', passed)
-                worksheet.update_acell(f'D{next_row}', fail)"     
+                worksheet.update_acell(f'D{next_row}', fail)
+                "  
 
 
   send-notification:
