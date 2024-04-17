@@ -48,6 +48,7 @@ namespace Assesment.Tests.UnitTests
                 Assert.That(Exam.IsPalindrome("level"), Is.True);
                 Assert.That(Exam.IsPalindrome("radar"), Is.True);
                 Assert.That(Exam.IsPalindrome("hello"), Is.False);
+                Assert.That(Exam.IsPalindrome("Hi"), Is.True);
                 Assert.That(Exam.IsPalindrome("Panama!"), Is.False);
                 Assert.That(Exam.IsPalindrome("!@#$%^&*()"), Is.True);
                 Assert.That(Exam.IsPalindrome("A!@#$%^&*()a"), Is.True);
