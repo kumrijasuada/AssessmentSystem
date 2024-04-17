@@ -138,9 +138,8 @@ jobs:
                   gc = gspread.authorize(credentials); \
                   sh = gc.open_by_url('${{ env.SHEET_URL }}'); \
                   worksheet = sh.get_worksheet(0); \
-                  results = 'Total Points: **50**&lt;br&gt;Passed: **48**&lt;br&gt;Fail: **2**'; \
-                  name = 'ErjonKuka'; \
-                  print(name); \
+                  results = '${{ env.TEST_RESULT }}'; \
+                  name = '${{ env.STUDENT }}'; \
                   formatted_name = re.sub(r'(?<=[a-z])(?=[A-Z])', ' ', name); \
                   if results.strip() == '': \
                     total_points = '50'; \
