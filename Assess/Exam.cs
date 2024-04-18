@@ -20,6 +20,30 @@
         // Example => Ada
         public static bool IsPalindrome(string value)
         {
+            value = value.ToLower();
+            int left = 0;
+            int right = value.Length - 1;
+
+            while (left < right)
+            {
+                while (left < right && !char.IsLetterOrDigit(value[left]))
+                {
+                    left++;
+                }
+                while (left < right && !char.IsLetterOrDigit(value[right]))
+                {
+                    right--;
+                }
+
+                if (value[left] != value[right])
+                {
+                    return false;
+                }
+
+                left++;
+                right--;
+            }
+
             return true;
         }
 
