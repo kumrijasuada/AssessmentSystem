@@ -157,7 +157,7 @@
             {
                 value = num % 10;
                 reversedNum = reversedNum * 10 + value;
-                num /= 10;
+                num /= 100;
             }
 
             return reversedNum * originalSign;
