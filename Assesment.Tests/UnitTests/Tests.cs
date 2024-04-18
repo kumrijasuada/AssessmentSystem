@@ -16,7 +16,7 @@ namespace Assesment.Tests.UnitTests
             {
                 Assert.That(e.GetMostFrequent("mamaaa"), Is.EqualTo('a'));
                 Assert.That(e.GetMostFrequent("gagga"), Is.EqualTo('g'));
-                Assert.That(e.GetMostFrequent("12312333"), Is.EqualTo('3'));
+                Assert.That(e.GetMostFrequent("12312333"), Is.EqualTo('4'));
                 Assert.Throws<ArgumentException>(() => e.GetMostFrequent(""), $"Empty input should throw ArgumentException.");
                 Assert.Throws<ArgumentException>(() => e.GetMostFrequent(null), $"Null input should throw ArgumentException.");
 
